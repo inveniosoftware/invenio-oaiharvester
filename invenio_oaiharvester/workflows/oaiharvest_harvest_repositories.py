@@ -130,7 +130,7 @@ class oaiharvest_harvest_repositories(RecordWorkflow):
 
         identifiers = None
 
-        extra_data = bwo.get_extra_data()
+        extra_data = bwo.extra_data
         if 'options' in extra_data and 'identifiers' in extra_data["options"]:
             identifiers = extra_data["options"]["identifiers"]
 
@@ -152,7 +152,8 @@ class oaiharvest_harvest_repositories(RecordWorkflow):
     def get_title(bwo):
         """Return title of object."""
         return "Summary of OAI harvesting from: {0}".format(
-            bwo.get_extra_data()["repository"]["name"])
+            bwo.extra_data.get("repository", {}).get("name", "No repository found")
+        )
 
     @staticmethod
     def formatter(bwo):
@@ -163,7 +164,7 @@ class oaiharvest_harvest_repositories(RecordWorkflow):
 
         identifiers = None
 
-        extra_data = bwo.get_extra_data()
+        extra_data = bwo.extra_data
         if 'options' in extra_data and 'identifiers' in extra_data["options"]:
             identifiers = extra_data["options"]["identifiers"]
 
