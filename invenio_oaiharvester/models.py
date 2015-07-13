@@ -21,8 +21,6 @@
 
 from invenio.ext.sqlalchemy import db
 from invenio.ext.sqlalchemy.utils import session_manager
-from invenio_records.models import Record as Bibrec
-from invenio.modules.scheduler.models import SchTASK
 
 
 def get_default_arguments():
@@ -87,34 +85,4 @@ class OaiHARVEST(db.Model):
         db.session.add(self)
 
 
-class OaiHARVESTLOG(db.Model):
-
-    """Represents a OaiHARVESTLOG record."""
-
-    __tablename__ = 'oaiHARVESTLOG'
-    id_oaiHARVEST = db.Column(
-        db.MediumInteger(9, unsigned=True),
-        db.ForeignKey(OaiHARVEST.id), nullable=False
-    )
-    id_bibrec = db.Column(
-        db.MediumInteger(8, unsigned=True),
-        db.ForeignKey(Bibrec.id), nullable=False, server_default='0'
-    )
-    bibupload_task_id = db.Column(db.Integer(11), db.ForeignKey(SchTASK.id),
-                                  nullable=False, server_default='0',
-                                  primary_key=True)
-    oai_id = db.Column(db.String(40), nullable=False, server_default='',
-                       primary_key=True)
-    date_harvested = db.Column(db.DateTime, nullable=False,
-                               server_default='1900-01-01 00:00:00',
-                               primary_key=True)
-    date_inserted = db.Column(db.DateTime, nullable=False,
-                              server_default='1900-01-01 00:00:00')
-    inserted_to_db = db.Column(db.Char(1), nullable=False,
-                               server_default='P')
-    bibrec = db.relationship(Bibrec, backref='harvestlogs')
-    schtask = db.relationship(SchTASK)
-
-
-__all__ = ('OaiHARVEST',
-           'OaiHARVESTLOG')
+__all__ = ('OaiHARVEST',)
