@@ -21,5 +21,22 @@
 
 
 class InvenioOAIRequestError(Exception):
-
     """Error with the OAI-PMH request."""
+
+
+class NameOrUrlMissing(Exception):
+    """
+    Name or url for harvesting missing.
+    """
+
+
+class WrongDateCombination(Exception):
+    """
+    'Until' date is larger that 'from' date.
+    """
+
+
+class IdentifiersOrDates(Exception):
+    """
+    Identifiers cannot be used in combination with dates.
+    """

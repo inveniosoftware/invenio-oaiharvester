@@ -22,7 +22,6 @@
 from invenio.ext.sqlalchemy import db
 from invenio.ext.sqlalchemy.utils import session_manager
 
-
 def get_default_arguments():
     """Return default values for arguments."""
     arguments_default = {'c_stylesheet': '',
