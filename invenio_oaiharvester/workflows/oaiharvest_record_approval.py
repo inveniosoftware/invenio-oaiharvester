@@ -17,7 +17,7 @@
 # along with Invenio; if not, write to the Free Software Foundation, Inc.,
 # 59 Temple Place, Suite 330, Boston, MA 02111 1307, USA.
 
-"""Generic record process in harvesting with backwards compatibility."""
+"""Generic record process in OAI harvesting with approval step."""
 
 from invenio.modules.workflows.definitions import RecordWorkflow
 from invenio.modules.workflows.tasks.logic_tasks import (
@@ -26,15 +26,15 @@ from invenio.modules.workflows.tasks.logic_tasks import (
 )
 from invenio.modules.workflows.tasks.marcxml_tasks import (
     approve_record,
-    convert_record_to_bibfield,
+    convert_record,
     quick_match_record,
     was_approved
 )
 from invenio.modules.workflows.tasks.workflows_tasks import log_info
 
-from ..tasks.postprocess import (
-    convert_record_with_repository,
-    upload_step
+from ..tasks.records import (
+    convert_record_to_json,
+    create_record
 )
 
 
@@ -45,14 +45,14 @@ class oaiharvest_record_approval(RecordWorkflow):
     object_type = "OAI harvest"
 
     workflow = [
-        convert_record_with_repository(),
-        convert_record_to_bibfield(),
+        convert_record("oaidc2marcxml"),
+        convert_record_to_json,
         workflow_if(quick_match_record, True),
         [
             approve_record,
             workflow_if(was_approved),
             [
-                upload_step,
+                create_record,
             ],
             workflow_else,
             [
