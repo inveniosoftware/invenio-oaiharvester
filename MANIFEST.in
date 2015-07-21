@@ -21,4 +21,5 @@ include LICENSE *.rst
 include pytest.ini tox.ini
 include docs/*.rst docs/*.py docs/Makefile
 recursive-include *.py *.css *.css_t *.conf *.html
+recursive-include invenio_oaiharvester *.py *.css *.css_t *.conf *.html
 recursive-include tests *.py
