@@ -31,7 +31,7 @@ class OAIHarvesterUtils(InvenioTestCase):
 
     def test_identifier_extraction(self):
         """Test extracting identifier from OAI XML."""
-        from invenio.modules.oaiharvester.utils import identifier_extraction_from_string
+        from invenio_oaiharvester.utils import identifier_extraction_from_string
         xml_sample = ("<record><test></test>"
                       "<identifier>identifier1</identifier></record>")
         self.assertEqual(identifier_extraction_from_string(xml_sample, oai_namespace=""),
@@ -39,7 +39,7 @@ class OAIHarvesterUtils(InvenioTestCase):
 
     def test_identifier_extraction_with_namespace(self):
         """Test extracting identifier from OAI XML."""
-        from invenio.modules.oaiharvester.utils import identifier_extraction_from_string
+        from invenio_oaiharvester.utils import identifier_extraction_from_string
         xml_sample = ("<OAI-PMH xmlns='http://www.openarchives.org/OAI/2.0/'>"
                       "<record><test></test>"
                       "<identifier>identifier1</identifier></record>"
@@ -49,7 +49,7 @@ class OAIHarvesterUtils(InvenioTestCase):
 
     def test_records_extraction_without_namespace(self):
         """Test extracting records from OAI XML without a namespace."""
-        from invenio.modules.oaiharvester.utils import record_extraction_from_string
+        from invenio_oaiharvester.utils import record_extraction_from_string
         xml_sample = """
         <OAI-PMH>
         <responseDate>2014-11-05T09:32:51Z</responseDate>
@@ -85,7 +85,7 @@ class OAIHarvesterUtils(InvenioTestCase):
 
     def test_records_extraction_with_namespace_getrecord(self):
         """Test extracting records from OAI XML with GetRecord."""
-        from invenio.modules.oaiharvester.utils import record_extraction_from_string
+        from invenio_oaiharvester.utils import record_extraction_from_string
         xml_sample = """<OAI-PMH xmlns="http://www.openarchives.org/OAI/2.0/"><responseDate>2014-11-05T09:32:51Z</responseDate>
         <request verb="GetRecord" identifier="oai:arXiv.org:0804.2273" metadataPrefix="arXiv">http://export.arxiv.org/oai2</request>
         <GetRecord>
@@ -118,7 +118,7 @@ class OAIHarvesterUtils(InvenioTestCase):
 
     def test_records_extraction_with_namespace_listrecords(self):
         """Test extracting records from OAI XML with ListRecords."""
-        from invenio.modules.oaiharvester.utils import record_extraction_from_string
+        from invenio_oaiharvester.utils import record_extraction_from_string
         xml_sample = """
         <OAI-PMH xmlns="http://www.openarchives.org/OAI/2.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
         <responseDate>2014-11-05T09:30:08Z</responseDate><request from="2014-05-01" verb="ListRecords" set="INSPIRE:Conferences" metadataPrefix="marcxml" until="2014-05-02">http://inspirehep.net/oai2d</request><ListRecords>
@@ -156,7 +156,7 @@ class OAIHarvesterUtils(InvenioTestCase):
 
     def test_records_extraction_from_file(self):
         """Test extracting records from OAI XML."""
-        from invenio.modules.oaiharvester.utils import record_extraction_from_file
+        from invenio_oaiharvester.utils import record_extraction_from_file
         xml_sample = """
         <OAI-PMH xmlns="http://www.openarchives.org/OAI/2.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
         <responseDate>2014-11-05T09:32:51Z</responseDate>
@@ -195,7 +195,7 @@ class OAIHarvesterUtils(InvenioTestCase):
 
     def test_identifier_filter(self):
         """oaiharvest - testing identifier filter."""
-        from invenio.modules.oaiharvester.utils import get_identifier_names
+        from invenio_oaiharvester.utils import get_identifier_names
         self.assertEqual(get_identifier_names("oai:mysite.com:1234"),
                          ["oai:mysite.com:1234"])
         self.assertEqual(get_identifier_names("oai:mysite.com:1234, oai:example.com:2134"),
@@ -205,7 +205,7 @@ class OAIHarvesterUtils(InvenioTestCase):
 
     def test_identifier_filter_special_arXiv(self):
         """oaiharvest - testing identifier filter for arXiv."""
-        from invenio.modules.oaiharvester.utils import get_identifier_names
+        from invenio_oaiharvester.utils import get_identifier_names
         self.assertEqual(get_identifier_names("oai:arxiv.org:1234.1245"),
                          ["oai:arXiv.org:1234.1245"])
         self.assertEqual(get_identifier_names("oai:arXiv.org:1234.1245, arXiv:1234.1245"),
