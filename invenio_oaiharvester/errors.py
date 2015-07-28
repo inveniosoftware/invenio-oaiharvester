@@ -40,3 +40,16 @@ class IdentifiersOrDates(Exception):
     """
     Identifiers cannot be used in combination with dates.
     """
+
+
+class WrongOutputIdentifier(Exception):
+    """
+    Output type not recognized. Try 'workflow', 'dir'/'directory',
+    or omit for stdout.
+    """
+
+
+class WorkflowNotFound(Exception):
+    """
+    Workflow not found. Try '-o workflow -w <workflow name> or provide a name (-n <name>).
+    """

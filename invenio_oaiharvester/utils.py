@@ -18,10 +18,9 @@
 # 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
 
 """OAI harvest utils."""
-from datetime import datetime
-
 import os
 import re
+from datetime import datetime
 
 from invenio.base.globals import cfg
 from invenio.utils.shell import run_shell_command
@@ -181,7 +180,8 @@ def get_identifier_names(identifier):
 
 def update_lastrun(oaiharvest_object):
     """
-    Updates the 'lastrun' attribute of the OaiHARVEST object.
+    Update the 'lastrun' attribute of the OaiHARVEST object.
+
     :param oaiharvest_object: An OaiHARVEST object from the database.
     """
     oaiharvest_object.lastrun = datetime.now()
@@ -190,20 +190,25 @@ def update_lastrun(oaiharvest_object):
 
 def get_workflow_name(workflow, name):
     """
-    Returns the name of the workflow depending on whether a name was provided or not.
+    Return the name of the workflow depending on whether a name was provided or not.
+
     :param workflow: The workflow name.
     :param name: The name of the oaiHARVEST object.
     """
-    if name is not None:
+    if workflow is not None:
+        return workflow
+    elif name is not None:
         obj = get_oaiharvest_object(name)
         return obj.workflows
     else:
-        return workflow
+        from invenio_oaiharvester.errors import WorkflowNotFound
+        raise WorkflowNotFound("Workflow not found. Try '-o workflow -w <workflow name> or provide a name (-n <name>).")
 
 
 def get_oaiharvest_object(name):
     """
-    Queries and returns an OaiHARVEST object based on its name.
+    Query and returns an OaiHARVEST object based on its name.
+
     :param name: The name of the OaiHARVEST object.
     :return: The OaiHARVEST object.
     """
@@ -213,16 +218,23 @@ def get_oaiharvest_object(name):
 
 def check_or_create_dir(output_dir):
     """
-    Checks whether the directory exists, and creates it if not.
+    Check whether the directory exists, and creates it if not.
+
     :param output_dir: The directory where the output should be sent.
     """
-    if not os.path.exists(output_dir):
-        os.makedirs(output_dir)
+    default = cfg['OAIHARVESTER_STORAGEDIR']
+    path = os.path.join(default, output_dir)
+
+    if not os.path.exists(path):
+        os.makedirs(path)
+
+    return path
 
 
 def create_file_name(output_dir):
     """
-    Creates a random file name.
+    Create a random file name.
+
     :param output_dir: The directory where the file should be created.
     """
     from tempfile import NamedTemporaryFile
@@ -238,23 +250,24 @@ def create_file_name(output_dir):
 
 def write_to_dir(records, output_dir, max_records=1000):
     """
-    Checks if the output directory exists, and creates it if it does not.
-    Then it creates an xml file with the record information, named 'harvesting_ + <current date>'
+    Check if the output directory exists, and creates it if it does not.
+
     :param records: An iterator of harvested records.
     :param output_dir: The directory where the output should be sent.
+    :param max_records: The max number of records to be written in a single file.
     """
-    check_or_create_dir(output_dir)
+    output_path = check_or_create_dir(output_dir)
 
-    total = 0
-    f = open(create_file_name(output_dir), 'w+')
+    total = 0  # total number of records processed
+    f = open(create_file_name(output_path), 'w+')
 
     for record in records:
+        total += 1
         if total % max_records == 0:
             # we need a new file to write to
             f.close()
-            f = open(create_file_name(output_dir), 'w+')
+            f = open(create_file_name(output_path), 'w+')
 
-        total += 1
         f.write(record.raw)
 
     f.close()
@@ -263,7 +276,8 @@ def write_to_dir(records, output_dir, max_records=1000):
 
 def print_to_stdout(records):
     """
-    Prints the raw information of the records to the stdout.
+    Print the raw information of the records to the stdout.
+
     :param records: An iterator of harvested records.
     """
     total = 0
@@ -276,7 +290,8 @@ def print_to_stdout(records):
 
 def print_total_records(total):
     """
-    Prints the total number of harvested records.
+    Print the total number of harvested records.
+
     :param total: The total number of harvested records.
     """
     print '----------------------------'

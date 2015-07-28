@@ -21,7 +21,7 @@ from .errors import NameOrUrlMissing, WrongDateCombination
 from .utils import get_oaiharvest_object
 
 
-def list_records(metadata_prefix='arXiv', from_date=None, until_date=None, url=None, name=None, setSpec=None):
+def list_records(metadata_prefix=None, from_date=None, until_date=None, url=None, name=None, setSpec=None):
     """
     Harvest records from an OAI repo, based on datestamp and/or set parameters.
     :param metadata_prefix: The prefix for the metadata return (e.g. 'arXiv') (required).
@@ -35,7 +35,12 @@ def list_records(metadata_prefix='arXiv', from_date=None, until_date=None, url=N
     if url:
         request = get_from_url(url)
     elif name:
-        request, metadata_prefix, lastrun = get_from_oai_name(name)
+        request, _metadata_prefix, lastrun = get_from_oai_name(name)
+
+        # In case we provide a prefix, we don't want it to be
+        # overwritten by the one we get from the name variable.
+        if metadata_prefix is None:
+            metadata_prefix = _metadata_prefix
     else:
         raise NameOrUrlMissing("Name/url missing. Retry using the parameters -n <name> or -u <url>.")
 

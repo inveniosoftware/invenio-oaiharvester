@@ -21,12 +21,21 @@
 
 import StringIO
 
+import six
+
+from werkzeug.utils import import_string
+
 
 def convert_record_to_json(obj, eng):
     """Convert one record from MARCXML to JSON."""
     from invenio.base.globals import cfg
     source = StringIO.StringIO(obj.data)
-    for record in cfg["RECORD_PROCESSORS"]["marcxml"](source):
+
+    processor = cfg["RECORD_PROCESSORS"]["marcxml"]
+    if isinstance(processor, six.string_types):
+        processor = import_string(processor)
+
+    for record in processor(source):
         # Should only be one.
         obj.data = record
         break

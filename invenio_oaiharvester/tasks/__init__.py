@@ -22,11 +22,12 @@ from invenio.celery import celery
 from invenio.modules.workflows.api import start
 
 from ..api import get_records, list_records
+from ..errors import WrongOutputIdentifier
 from ..utils import write_to_dir, print_to_stdout, get_workflow_name, get_identifier_names
 
 
 @celery.task
-def get_specific_records(identifiers, metadata_prefix, url, name, output_dir, workflow):
+def get_specific_records(identifiers, metadata_prefix, url, name, output, workflow, directory):
     """
     Call the module api, in order to harvest specific records from an OAI repo,
     based on their unique identifiers.
@@ -34,16 +35,17 @@ def get_specific_records(identifiers, metadata_prefix, url, name, output_dir, wo
     :param identifiers: A list of unique identifiers for records to be harvested.
     :param url: The The url to be used to create the endpoint.
     :param name: The name of the OaiHARVEST object that we want to use to create the endpoint.
-    :param output_dir: The directory where the output should be sent.
+    :param output: The type of the output (stdout, workflow, dir/directory).
     :param workflow: The workflow that should process the output.
+    :param directory: The directory that we want to send the harvesting results.
     """
     identifiers = get_identifier_names(identifiers)
-    schedule_harvest(workflow, output_dir,
-                     get_records(identifiers, metadata_prefix, url, name), name)
+    schedule_harvest(output, workflow, directory, name,
+                     get_records(identifiers, metadata_prefix, url, name))
 
 
 @celery.task
-def list_records_from_dates(metadata_prefix, from_date, until_date, url, name, setSpec, output_dir, workflow):
+def list_records_from_dates(metadata_prefix, from_date, until_date, url, name, setSpec, output, workflow, directory):
     """
     Call the module api, in order to harvest records from an OAI repo,
     based on datestamp and/or set parameters.
@@ -53,29 +55,33 @@ def list_records_from_dates(metadata_prefix, from_date, until_date, url, name, s
     :param url: The The url to be used to create the endpoint.
     :param name: The name of the OaiHARVEST object that we want to use to create the endpoint.
     :param setSpec: The 'set' criteria for the harvesting (optional).
-    :param output_dir: The directory where the output should be sent.
+    :param output: The type of the output (stdout, workflow, dir/directory).
     :param workflow: The workflow that should process the output.
+    :param directory: The directory that we want to send the harvesting results.
     """
-    schedule_harvest(workflow, output_dir,
-                     list_records(metadata_prefix, from_date, until_date, url, name, setSpec), name)
+    schedule_harvest(output, workflow, directory, name,
+                     list_records(metadata_prefix, from_date, until_date, url, name, setSpec))
 
 
-def schedule_harvest(workflow, output_dir, records, name):
+def schedule_harvest(output, workflow, directory, name, records):
     """
     Selects the output method, depending on the provided parameters. Default is stdout.
+    :param output: The type of the output (stdout, workflow, dir/directory).
     :param workflow: The workflow that should process the output.
-    :param output_dir: The directory where the output should be sent.
-    :param records: An iterator of harvested records.
+    :param directory: The directory that we want to send the harvesting results.
     :param name: The name of the OaiHARVEST object.
+    :param records: An iterator of harvested records.
     """
-    if workflow:
-        # record_list = []
-        # for record in records:
-        # record_list.append(record.raw)
-        #
-        # start(get_workflow_name(workflow, name), record_list)
-        pass
-    elif output_dir:
-        write_to_dir(records, output_dir, max_records=1000)
-    else:
+    if output is 'stdout':
         print_to_stdout(records)
+    elif output == 'dir' or output == 'directory':
+        write_to_dir(records, directory)
+    elif output == 'workflow':
+        record_list = []
+        for record in records:
+            record_list.append(record.raw)
+
+        start(get_workflow_name(workflow, name),
+              record_list)
+    else:
+        raise WrongOutputIdentifier('Output type not recognized. Try workflow, dir/directory or omit for stdout.')

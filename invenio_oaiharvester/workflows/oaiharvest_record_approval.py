@@ -19,7 +19,7 @@
 
 """Generic record process in OAI harvesting with approval step."""
 
-from invenio.modules.workflows.definitions import RecordWorkflow
+from invenio.modules.workflows.definitions import WorkflowBase
 from invenio.modules.workflows.tasks.logic_tasks import (
     workflow_else,
     workflow_if,
@@ -38,14 +38,14 @@ from ..tasks.records import (
 )
 
 
-class oaiharvest_record_approval(RecordWorkflow):
+class oaiharvest_record_approval(WorkflowBase):
 
     """Workflow run for each record OAI harvested."""
 
     object_type = "OAI harvest"
 
     workflow = [
-        convert_record("oaidc2marcxml"),
+        convert_record("oaidc2marcxml.xsl"),
         convert_record_to_json,
         workflow_if(quick_match_record, True),
         [
