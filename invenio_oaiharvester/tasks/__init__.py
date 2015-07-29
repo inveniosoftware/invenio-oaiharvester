@@ -31,7 +31,7 @@ def get_specific_records(identifiers, metadata_prefix, url, name, output, workfl
     """
     Call the module api, in order to harvest specific records from an OAI repo,
     based on their unique identifiers.
-    :param metadata_prefix: The prefix for the metadata return (e.g. 'arXiv') (required).
+    :param metadata_prefix: The prefix for the metadata return (e.g. 'oai_dc') (required).
     :param identifiers: A list of unique identifiers for records to be harvested.
     :param url: The The url to be used to create the endpoint.
     :param name: The name of the OaiHARVEST object that we want to use to create the endpoint.
@@ -49,7 +49,7 @@ def list_records_from_dates(metadata_prefix, from_date, until_date, url, name, s
     """
     Call the module api, in order to harvest records from an OAI repo,
     based on datestamp and/or set parameters.
-    :param metadata_prefix: The prefix for the metadata return (e.g. 'arXiv') (required).
+    :param metadata_prefix: The prefix for the metadata return (e.g. 'oai_dc') (required).
     :param from_date: The lower bound date for the harvesting (optional).
     :param until_date: The upper bound date for the harvesting (optional).
     :param url: The The url to be used to create the endpoint.

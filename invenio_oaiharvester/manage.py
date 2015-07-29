@@ -20,9 +20,9 @@
 The main invenio-oaiharvester function, which can be used to harvest records from an OAI repository through the cli.
 
 Usage: inveniomanage oaiharvester get <args>
-    -m --metadataprefix <the metadata prefix for the returned records (e.g. 'arXiv')>
-    -n --name <the name of the OaiHARVEST object that represents the repo (e.g. 'arxiv_math_daily')>
-    -s --setSpec <defines the set criteria (e.g. 'physics:hep-lat')>
+    -m --metadataprefix <the metadata prefix for the returned records (e.g. 'oai_dc')>
+    -n --name <the name of the OaiHARVEST object that represents the repo (e.g. 'my_source_config')>
+    -s --setSpec <defines the set criteria of the repository (e.g. 'physics:hep-lat' from arXiv.org)>
     -i --identifiers <identifiers for specific records to harvest (e.g 'oai:arXiv.org:1507.03011')>
     -f --from <lower bound date for selective harvesting>
     -t --to <upper bound date for selective harvesting>
@@ -40,7 +40,7 @@ from .tasks import get_specific_records, list_records_from_dates
 manager = Manager(usage=__doc__)
 
 
-@manager.option('-m', '--metadataprefix', dest='metadata_prefix', default='arXiv')
+@manager.option('-m', '--metadataprefix', dest='metadata_prefix', default=None)
 @manager.option('-n', '--name', dest='name', default=None)
 @manager.option('-s', '--setSpec', dest='setSpec', default=None)
 @manager.option('-i', '--identifiers', dest='identifiers', default=None)
@@ -54,7 +54,7 @@ def get(metadata_prefix, name, setSpec, identifiers, from_date, until_date, url,
     """
     Harvest records from an OAI repo immediately, without scheduling.
 
-    :param metadata_prefix: The prefix for the metadata return (e.g. 'arXiv') (required).
+    :param metadata_prefix: The prefix for the metadata return (e.g. 'oai_dc').
     :param name: The name of the OaiHARVEST object that we want to use to create the endpoint.
     :param setSpec: The 'set' criteria for the harvesting (optional).
     :param identifiers: A list of unique identifiers for records to be harvested.
@@ -83,7 +83,7 @@ def queue(metadata_prefix, name, setSpec, identifiers, from_date, until_date, ur
     """
     Schedule a run to harvest records from an OAI repo.
 
-    :param metadata_prefix: The prefix for the metadata return (e.g. 'arXiv') (required).
+    :param metadata_prefix: The prefix for the metadata return (e.g. 'oai_dc').
     :param name: The name of the OaiHARVEST object that we want to use to create the endpoint.
     :param setSpec: The 'set' criteria for the harvesting (optional).
     :param identifiers: A list of unique identifiers for records to be harvested.
@@ -103,7 +103,7 @@ def begin_harvesting_action(metadata_prefix, name, setSpec, identifiers, from_da
     """
     Select the right method for harvesting according to the parameters, and run it immediately or queue it.
 
-    :param metadata_prefix: The prefix for the metadata return (e.g. 'arXiv') (required).
+    :param metadata_prefix: The prefix for the metadata return (e.g. 'oai_dc').
     :param name: The name of the OaiHARVEST object that we want to use to create the endpoint.
     :param setSpec: The 'set' criteria for the harvesting (optional).
     :param identifiers: A list of unique identifiers for records to be harvested.
