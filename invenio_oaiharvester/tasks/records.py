@@ -21,6 +21,8 @@
 
 import StringIO
 
+from functools import wraps
+
 import six
 
 from werkzeug.utils import import_string
@@ -48,14 +50,50 @@ def create_record(obj, eng):
     create_record(obj.data)
 
 
-def check_record(obj, eng):
-    """Check if there is a valid record in the data.
+def quick_match_record(keys_to_check=None, collection=None):
+    """Try to quickly match the record with the database.
 
-    If not, skip this object.
+    You can pass a list of tuples containing the key to retrieve and field.
+
+    E.g. [("control_number",  "control_number"), ..]
+
+    would make a search for record["control_number"] using field
+    "control_number".
+
+    :param keys_to_check: list of tuples [(record_key, search_field), ..]
+    :param collection: collection to search in. None by default.
+
+    :return: True if matches found, False otherwise
     """
-    try:
-        assert obj.data
-        assert obj.data != '<?xml version="1.0"?>\n<collection/>\n'
-    except AssertionError as e:
-        obj.log.info("No data found in record. Skipping: {0}".format(str(e)))
-        eng.continueNextToken()
+    @wraps(quick_match_record)
+    def _quick_match_record(obj, eng):
+        keys = keys_to_check  # needed due to outer scope issues
+        if not keys:
+            # At least try the recid
+            keys = [("control_number", "control_number")]
+
+        from invenio_records.api import Record
+        from invenio.modules.search.api import Query
+
+        try:
+            record = Record(obj.data.dumps())
+        except AttributeError:
+            record = Record(obj.data)
+
+        for key, field in keys:
+            values = record[key] if key in record else None
+            if values:
+                if not isinstance(values, list):
+                    values = [values]
+                for val in values:
+                    if field:
+                        query_string = '{0}:"{1}"'.format(field, val)
+                    else:
+                        query_string = '"{0}"'.format(val)
+
+                    query = Query(query_string)
+                    result = query.search(collection=collection)
+                    if len(result) > 0:
+                        return True
+        return False
+    return _quick_match_record
