@@ -19,6 +19,7 @@
 
 """Generic record processing before inserting into database."""
 
+from __future__ import absolute_import, print_function, unicode_literals
 
 from invenio.modules.workflows.tasks.logic_tasks import (
     workflow_else,

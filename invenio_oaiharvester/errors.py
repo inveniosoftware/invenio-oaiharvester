@@ -19,6 +19,8 @@
 
 """OAI harvester errors."""
 
+from __future__ import absolute_import, print_function, unicode_literals
+
 
 class InvenioOAIRequestError(Exception):
     """Error with the OAI-PMH request."""

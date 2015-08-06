@@ -19,6 +19,8 @@
 
 """Generic record processing with approval step before inserting."""
 
+from __future__ import absolute_import, print_function, unicode_literals
+
 from flask import render_template
 
 from invenio.modules.workflows.tasks.logic_tasks import (

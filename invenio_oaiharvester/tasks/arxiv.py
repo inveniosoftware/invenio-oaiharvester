@@ -19,6 +19,8 @@
 
 """Tasks used in OAI harvesting for arXiv record manipulation."""
 
+from __future__ import absolute_import, print_function, unicode_literals
+
 import os
 import re
 

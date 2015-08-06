@@ -37,6 +37,8 @@ Usage: inveniomanage oaiharvester get <args>
     -d --dir <the directory where the harvested records should be saved>
 """
 
+from __future__ import absolute_import, print_function, unicode_literals
+
 from invenio.ext.script import Manager
 
 from .errors import IdentifiersOrDates
@@ -54,8 +56,9 @@ manager = Manager(usage=__doc__)
 @manager.option('-u', '--url', dest='url', default=None)
 @manager.option('-o', '--output', dest='output', default='stdout')
 @manager.option('-w', '--workflow', dest='workflow', default=None)
-@manager.option('-d', '--dir', dest='directory', default='harvestedrecords')
-def get(metadata_prefix, name, setSpec, identifiers, from_date, until_date, url, output, workflow, directory):
+@manager.option('-d', '--dir', dest='directory', default='records_harvested')
+def get(metadata_prefix, name, setSpec, identifiers, from_date,
+        until_date, url, output, workflow, directory):
     """Harvest records from an OAI repository immediately, without scheduling.
 
     :param metadata_prefix: The prefix for the metadata return (e.g. 'oai_dc').
@@ -82,8 +85,9 @@ def get(metadata_prefix, name, setSpec, identifiers, from_date, until_date, url,
 @manager.option('-u', '--url', dest='url', default=None)
 @manager.option('-o', '--output', dest='output', default='stdout')
 @manager.option('-w', '--workflow', dest='workflow', default=None)
-@manager.option('-d', '--dir', dest='directory', default='harvestedrecords')
-def queue(metadata_prefix, name, setSpec, identifiers, from_date, until_date, url, output, workflow, directory):
+@manager.option('-d', '--dir', dest='directory', default='records_harvested')
+def queue(metadata_prefix, name, setSpec, identifiers, from_date,
+          until_date, url, output, workflow, directory):
     """Schedule a run to harvest records from an OAI repository.
 
     :param metadata_prefix: The prefix for the metadata return (e.g. 'oai_dc').
@@ -123,15 +127,25 @@ def begin_harvesting_action(metadata_prefix, name, setSpec, identifiers, from_da
         # If no identifiers are provided, a harvest is scheduled:
         # - url / name is used for the endpoint
         # - from_date / lastrun is used for the dates (until_date optionally if from_date is used)
-        callback = list_records_from_dates.delay if is_queue else list_records_from_dates
-        callback(metadata_prefix, from_date, until_date, url, name, setSpec, output, workflow, directory)
+        params = (metadata_prefix, from_date, until_date, url,
+                  name, setSpec, output, workflow, directory)
+        if is_queue:
+            job = list_records_from_dates.delay(*params)
+            print("Scheduled job {0}".format(job.id))
+        else:
+            list_records_from_dates(*params)
     else:
         if (from_date is not None) or (until_date is not None):
             raise IdentifiersOrDates("Identifiers cannot be used in combination with dates.")
 
         # If identifiers are provided, we schedule an immediate run using them.
-        callback = get_specific_records.delay if is_queue else get_specific_records
-        callback(identifiers, metadata_prefix, url, name, output, workflow, directory)
+        params = (identifiers, metadata_prefix, url,
+                  name, output, workflow, directory)
+        if is_queue:
+            job = get_specific_records.delay(*params)
+            print("Scheduled job {0}".format(job.id))
+        else:
+            get_specific_records(*params)
 
 
 def main():

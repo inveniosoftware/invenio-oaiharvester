@@ -19,6 +19,8 @@
 
 """Tasks used in OAI harvesting for invenio records manipulation."""
 
+from __future__ import absolute_import, print_function, unicode_literals
+
 import StringIO
 from functools import wraps
 

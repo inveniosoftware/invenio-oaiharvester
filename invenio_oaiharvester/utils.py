@@ -19,8 +19,11 @@
 
 """OAI harvest utils."""
 
+from __future__ import absolute_import, print_function, unicode_literals
+
 import os
 import re
+import sys
 from datetime import datetime
 
 from lxml import etree
@@ -179,8 +182,7 @@ def get_identifier_names(identifier):
 
 
 def update_lastrun(oaiharvest_object):
-    """
-    Update the 'lastrun' attribute of the OaiHARVEST object.
+    """Update the 'lastrun' attribute of the OaiHARVEST object.
 
     :param oaiharvest_object: An OaiHARVEST object from the database.
     """
@@ -189,8 +191,7 @@ def update_lastrun(oaiharvest_object):
 
 
 def get_workflow_name(workflow, name):
-    """
-    Return the name of the workflow depending on whether a name was provided or not.
+    """Return the name of the workflow depending on whether a name was provided or not.
 
     :param workflow: The workflow name.
     :param name: The name of the oaiHARVEST object.
@@ -206,8 +207,7 @@ def get_workflow_name(workflow, name):
 
 
 def get_oaiharvest_object(name):
-    """
-    Query and returns an OaiHARVEST object based on its name.
+    """Query and returns an OaiHARVEST object based on its name.
 
     :param name: The name of the OaiHARVEST object.
     :return: The OaiHARVEST object.
@@ -217,8 +217,7 @@ def get_oaiharvest_object(name):
 
 
 def check_or_create_dir(output_dir):
-    """
-    Check whether the directory exists, and creates it if not.
+    """Check whether the directory exists, and creates it if not.
 
     :param output_dir: The directory where the output should be sent.
     """
@@ -232,8 +231,7 @@ def check_or_create_dir(output_dir):
 
 
 def create_file_name(output_dir):
-    """
-    Create a random file name.
+    """Create a random file name.
 
     :param output_dir: The directory where the file should be created.
     """
@@ -249,8 +247,7 @@ def create_file_name(output_dir):
 
 
 def write_to_dir(records, output_dir, max_records=1000):
-    """
-    Check if the output directory exists, and creates it if it does not.
+    """Check if the output directory exists, and creates it if it does not.
 
     :param records: An iterator of harvested records.
     :param output_dir: The directory where the output should be sent.
@@ -258,42 +255,54 @@ def write_to_dir(records, output_dir, max_records=1000):
     """
     output_path = check_or_create_dir(output_dir)
 
+    files_created = [create_file_name(output_path)]
     total = 0  # total number of records processed
-    f = open(create_file_name(output_path), 'w+')
+    f = open(files_created[0], 'w+')
 
     for record in records:
         total += 1
         if total % max_records == 0:
             # we need a new file to write to
             f.close()
-            f = open(create_file_name(output_path), 'w+')
+            files_created.append(create_file_name(output_path))
+            f = open(files_created[-1], 'w+')
 
         f.write(record.raw)
 
     f.close()
-    print_total_records(total)
+    return files_created, total
 
 
 def print_to_stdout(records):
-    """
-    Print the raw information of the records to the stdout.
+    """Print the raw information of the records to the stdout.
 
     :param records: An iterator of harvested records.
     """
     total = 0
     for record in records:
         total += 1
-        print '--------------------------------------------------------------------------------------'
-        print record.raw
-    print_total_records(total)
+        print(record.raw)
+    return total
+
+
+def print_files_created(files_created):
+    """Print the paths to all files created.
+
+    :param files_created: list of strings containing file paths
+    """
+    print('-------------------', file=sys.stderr)
+    print('Harvested {0} files'.format(len(files_created)), file=sys.stderr)
+    print('-------------------', file=sys.stderr)
+    for path in files_created:
+        print(path, file=sys.stderr)
+    print()
 
 
 def print_total_records(total):
-    """
-    Print the total number of harvested records.
+    """Print the total number of harvested records.
 
     :param total: The total number of harvested records.
     """
-    print '----------------------------'
-    print 'Total Number of records:', total
-    print '----------------------------'
+    print('------------------------------', file=sys.stderr)
+    print('Number of records harvested {0}'.format(total), file=sys.stderr)
+    print('------------------------------', file=sys.stderr)

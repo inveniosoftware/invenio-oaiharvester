@@ -19,6 +19,8 @@
 
 """OAI harvest database models."""
 
+from __future__ import absolute_import, print_function, unicode_literals
+
 from invenio.ext.sqlalchemy import db
 from invenio.ext.sqlalchemy.utils import session_manager
 
