@@ -20,11 +20,9 @@
 """Tasks used in OAI harvesting for invenio records manipulation."""
 
 import StringIO
-
 from functools import wraps
 
 import six
-
 from werkzeug.utils import import_string
 
 

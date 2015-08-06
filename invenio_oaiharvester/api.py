@@ -18,6 +18,7 @@
 # 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
 
 from sickle import Sickle
+
 from .errors import NameOrUrlMissing, WrongDateCombination
 from .utils import get_oaiharvest_object
 
@@ -44,7 +45,7 @@ def list_records(metadata_prefix=None, from_date=None, until_date=None,
         if metadata_prefix is None:
             metadata_prefix = _metadata_prefix
     else:
-        raise NameOrUrlMissing("Name/url missing. Retry using the parameters -n <name> or -u <url>.")
+        raise NameOrUrlMissing("Retry using the parameters -n <name> or -u <url>.")
 
     # By convention, when we have a url we have no lastrun, and when we use
     # the name we can either have from_date (if provided) or lastrun.
@@ -84,7 +85,7 @@ def get_records(identifiers, metadata_prefix=None, url=None, name=None):
         if metadata_prefix is None:
             metadata_prefix = _metadata_prefix
     else:
-        raise NameOrUrlMissing("Name/url missing. Retry using the parameters -n <name> or -u <url>.")
+        raise NameOrUrlMissing("Retry using the parameters -n <name> or -u <url>.")
 
     if metadata_prefix is None:
         metadata_prefix = "oai_dc"

@@ -18,15 +18,15 @@
 # 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
 
 """OAI harvest utils."""
+
 import os
 import re
 from datetime import datetime
 
-from invenio.base.globals import cfg
-from invenio.utils.shell import run_shell_command
-
 from lxml import etree
 
+from invenio.base.globals import cfg
+from invenio.utils.shell import run_shell_command
 
 REGEXP_OAI_ID = re.compile("<identifier.*?>(.*?)<\/identifier>", re.DOTALL)
 

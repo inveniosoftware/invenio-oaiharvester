@@ -25,31 +25,20 @@ class InvenioOAIRequestError(Exception):
 
 
 class NameOrUrlMissing(Exception):
-    """
-    Name or url for harvesting missing.
-    """
+    """Name or url for harvesting missing."""
 
 
 class WrongDateCombination(Exception):
-    """
-    'Until' date is larger that 'from' date.
-    """
+    """'Until' date is larger that 'from' date."""
 
 
 class IdentifiersOrDates(Exception):
-    """
-    Identifiers cannot be used in combination with dates.
-    """
+    """Identifiers cannot be used in combination with dates."""
 
 
 class WrongOutputIdentifier(Exception):
-    """
-    Output type not recognized. Try 'workflow', 'dir'/'directory',
-    or omit for stdout.
-    """
+    """Output type not recognized. Try 'workflow', directory' or omit for stdout."""
 
 
 class WorkflowNotFound(Exception):
-    """
-    Workflow not found. Try '-o workflow -w <workflow name> or provide a name (-n <name>).
-    """
+    """Workflow not found. Try '-o workflow -w <workflow name> or provide a name (-n <name>)."""

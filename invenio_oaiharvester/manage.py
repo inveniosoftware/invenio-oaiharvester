@@ -16,8 +16,13 @@
 # You should have received a copy of the GNU General Public License
 # along with Invenio; if not, write to the Free Software Foundation, Inc.,
 # 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
-"""
-The main invenio-oaiharvester function, which can be used to harvest records from an OAI repository through the cli.
+
+"""CLI tool to harvest records from an OAI-PMH repository.
+
+The output can be directed in several ways:
+   * Direct to files in a directory
+   * Harvested data passed into a "workflow" (See Invenio workflow module)
+   * Printed to stdout (default)
 
 Usage: inveniomanage oaiharvester get <args>
     -m --metadataprefix <the metadata prefix for the returned records (e.g. 'oai_dc')>
@@ -51,8 +56,7 @@ manager = Manager(usage=__doc__)
 @manager.option('-w', '--workflow', dest='workflow', default=None)
 @manager.option('-d', '--dir', dest='directory', default='harvestedrecords')
 def get(metadata_prefix, name, setSpec, identifiers, from_date, until_date, url, output, workflow, directory):
-    """
-    Harvest records from an OAI repo immediately, without scheduling.
+    """Harvest records from an OAI repository immediately, without scheduling.
 
     :param metadata_prefix: The prefix for the metadata return (e.g. 'oai_dc').
     :param name: The name of the OaiHARVEST object that we want to use to create the endpoint.
@@ -80,8 +84,7 @@ def get(metadata_prefix, name, setSpec, identifiers, from_date, until_date, url,
 @manager.option('-w', '--workflow', dest='workflow', default=None)
 @manager.option('-d', '--dir', dest='directory', default='harvestedrecords')
 def queue(metadata_prefix, name, setSpec, identifiers, from_date, until_date, url, output, workflow, directory):
-    """
-    Schedule a run to harvest records from an OAI repo.
+    """Schedule a run to harvest records from an OAI repository.
 
     :param metadata_prefix: The prefix for the metadata return (e.g. 'oai_dc').
     :param name: The name of the OaiHARVEST object that we want to use to create the endpoint.
@@ -100,8 +103,9 @@ def queue(metadata_prefix, name, setSpec, identifiers, from_date, until_date, ur
 
 def begin_harvesting_action(metadata_prefix, name, setSpec, identifiers, from_date,
                             until_date, url, output, workflow, directory, is_queue=False):
-    """
-    Select the right method for harvesting according to the parameters, and run it immediately or queue it.
+    """Select the right method for harvesting according to the parameters.
+
+    Then run it immediately or queue it with Celery.
 
     :param metadata_prefix: The prefix for the metadata return (e.g. 'oai_dc').
     :param name: The name of the OaiHARVEST object that we want to use to create the endpoint.
