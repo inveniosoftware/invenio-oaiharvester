@@ -47,10 +47,80 @@ compliant repositories.
 * Free software: GPLv2 license
 * Documentation: https://invenio-oaiharvester.readthedocs.org.
 
+*This is an experimental development preview release.*
+
 Features
 ========
 
-Metadata exchange is performed on top of the OAI-PMH, the Open Archives
-Initiative’s Protocol for Metadata Harvesting.  The OAI Harvest Admin
-Interface can be used to set up a database of OAI sources and open your
-repository for OAI harvesting.
+This module allows you to easily harvest OAI-PMH repositories, thanks to the `Sickle`_ module, and feed the
+output into your ingestion workflows, or simply to files. You can configure
+your OAI-PMH sources via a web-interface and run or schedule immediate harvesting jobs
+via command-line or regularly via `Celery beat`_.
+
+.. _Celery beat: http://celery.readthedocs.org/en/latest/userguide/periodic-tasks.html
+.. _Sickle: http://sickle.readthedocs.org/en/latest/
+
+Harvesting is simple
+====================
+
+.. code-block:: shell
+
+    inveniomanage oaiharvester get -u http://export.arxiv.org/oai2 -i oai:arXiv.org:1507.07286 > my_record.xml
+
+
+This will harvest the repository for a specific record and print the records to stdout - which in this case will save it to a file called ``my_record.xml``.
+
+If you want to have your harvested records saved in a directory automatically, its easy:
+
+.. code-block:: shell
+
+    inveniomanage oaiharvester get -u http://export.arxiv.org/oai2 -i oai:arXiv.org:1507.07286 -o dir
+
+
+Note the  output ``-o`` parameter that specifies how to output the harvested records. The three options are:
+
+   * Sent to a workflow (E.g. `-o workflow`)
+   * Saved files in a folder (E.g. `-o dir`)
+   * Printed to stdout (default)
+
+
+Harvesting with workflows
+=========================
+
+.. code-block:: shell
+
+    inveniomanage oaiharvester get -u http://export.arxiv.org/oai2 -i oai:arXiv.org:1507.07286 -o workflow
+
+When you send an harvested record to a workflow you can process the harvested
+files however you'd like and then even upload it automatically into your own repository.
+
+This module already provides some
+
+
+Managing OAI-PMH sources
+========================
+
+If you want to store configuration for an OAI repository, you can use the
+administration interface available via the admin panel. This is useful if you regularly need to query a server.
+
+Here you can add information about the server URL, metadataPrefix to use etc. This information is also available when scheduling and running tasks:
+
+
+.. code-block:: shell
+
+    inveniomanage oaiharvester get -n somerepo -i oai:example.org:1234
+
+Here we are using the `-n, --name` parameter to specify which stored OAI-PMH source to query, by name.
+
+
+API
+===
+
+If you need to schedule or run harvests via Python, you can use our API:
+
+.. code-block:: python
+
+    from invenio_oaiharvester.api import get_records
+    for rec in get_records(identifiers=["oai:arXiv.org:1207.7214"],
+                           url="http://export.arxiv.org/oai2"):
+        print rec.raw
