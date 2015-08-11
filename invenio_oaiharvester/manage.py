@@ -19,22 +19,8 @@
 
 """CLI tool to harvest records from an OAI-PMH repository.
 
-The output can be directed in several ways:
-   * Direct to files in a directory
-   * Harvested data passed into a "workflow" (See Invenio workflow module)
-   * Printed to stdout (default)
-
-Usage: inveniomanage oaiharvester get <args>
-    -m --metadataprefix <the metadata prefix for the returned records (e.g. 'oai_dc')>
-    -n --name <the name of the OaiHARVEST object that represents the repo (e.g. 'my_source_config')>
-    -s --setSpec <defines the set criteria of the repository (e.g. 'physics:hep-lat' from arXiv.org)>
-    -i --identifiers <identifiers for specific records to harvest (e.g 'oai:arXiv.org:1507.03011')>
-    -f --from <lower bound date for selective harvesting>
-    -t --to <upper bound date for selective harvesting>
-    -u --url <the url for the OAI repo to harvest>
-    -o --output <type of the output: workflow, dir/directory or stdout (default)>
-    -w --workflow <the name of the workflow to be used>
-    -d --dir <the directory where the harvested records should be saved>
+The output can be directed to files in a directory, passed into a "workflow"
+or printed to stdout (default).
 """
 
 from __future__ import absolute_import, print_function, unicode_literals
@@ -44,63 +30,59 @@ from invenio.ext.script import Manager
 from .errors import IdentifiersOrDates
 from .tasks import get_specific_records, list_records_from_dates
 
-manager = Manager(usage=__doc__)
+manager = Manager(description=__doc__)
 
 
-@manager.option('-m', '--metadataprefix', dest='metadata_prefix', default=None)
-@manager.option('-n', '--name', dest='name', default=None)
-@manager.option('-s', '--setSpec', dest='setSpec', default=None)
-@manager.option('-i', '--identifiers', dest='identifiers', default=None)
-@manager.option('-f', '--from', dest='from_date', default=None)
-@manager.option('-t', '--to', dest='until_date', default=None)
-@manager.option('-u', '--url', dest='url', default=None)
-@manager.option('-o', '--output', dest='output', default='stdout')
-@manager.option('-w', '--workflow', dest='workflow', default=None)
-@manager.option('-d', '--dir', dest='directory', default='records_harvested')
+@manager.option('-m', '--metadataprefix', dest='metadata_prefix', default=None,
+                help="The prefix for the metadata return (e.g. 'oai_dc')")
+@manager.option('-n', '--name', dest='name', default=None,
+                help="The name of the OaiHARVEST object that we want to use to create the endpoint.")
+@manager.option('-s', '--setSpec', dest='setSpec', default=None,
+                help="The 'set' criteria for the harvesting (optional).")
+@manager.option('-i', '--identifiers', dest='identifiers', default=None,
+                help="A list of unique identifiers for records to be harvested.")
+@manager.option('-f', '--from', dest='from_date', default=None,
+                help="The lower bound date for the harvesting (optional).")
+@manager.option('-t', '--to', dest='until_date', default=None,
+                help="The upper bound date for the harvesting (optional).")
+@manager.option('-u', '--url', dest='url', default=None,
+                help="The upper bound date for the harvesting (optional).")
+@manager.option('-o', '--output', dest='output', default='stdout',
+                help="The type of the output (stdout, workflow, dir/directory).")
+@manager.option('-w', '--workflow', dest='workflow', default=None,
+                help="The workflow that should process the output.")
+@manager.option('-d', '--dir', dest='directory', default='records_harvested',
+                help="The directory that we want to send the harvesting results.")
 def get(metadata_prefix, name, setSpec, identifiers, from_date,
         until_date, url, output, workflow, directory):
-    """Harvest records from an OAI repository immediately, without scheduling.
-
-    :param metadata_prefix: The prefix for the metadata return (e.g. 'oai_dc').
-    :param name: The name of the OaiHARVEST object that we want to use to create the endpoint.
-    :param setSpec: The 'set' criteria for the harvesting (optional).
-    :param identifiers: A list of unique identifiers for records to be harvested.
-    :param from_date: The lower bound date for the harvesting (optional).
-    :param until_date: The upper bound date for the harvesting (optional).
-    :param url: The The url to be used to create the endpoint.
-    :param output: The type of the output (stdout, workflow, dir/directory).
-    :param workflow: The workflow that should process the output.
-    :param directory: The directory that we want to send the harvesting results.
-    """
+    """Harvest records from an OAI repository immediately, without scheduling."""
     begin_harvesting_action(metadata_prefix, name, setSpec, identifiers, from_date,
                             until_date, url, output, workflow, directory, is_queue=False)
 
 
-@manager.option('-m', '--metadataprefix', dest='metadata_prefix', default=None)
-@manager.option('-n', '--name', dest='name', default=None)
-@manager.option('-s', '--setSpec', dest='setSpec', default=None)
-@manager.option('-i', '--identifiers', dest='identifiers', default=None)
-@manager.option('-f', '--from', dest='from_date', default=None)
-@manager.option('-t', '--to', dest='until_date', default=None)
-@manager.option('-u', '--url', dest='url', default=None)
-@manager.option('-o', '--output', dest='output', default='stdout')
-@manager.option('-w', '--workflow', dest='workflow', default=None)
-@manager.option('-d', '--dir', dest='directory', default='records_harvested')
+@manager.option('-m', '--metadataprefix', dest='metadata_prefix', default=None,
+                help="The prefix for the metadata return (e.g. 'oai_dc')")
+@manager.option('-n', '--name', dest='name', default=None,
+                help="The name of the OaiHARVEST object that we want to use to create the endpoint.")
+@manager.option('-s', '--setSpec', dest='setSpec', default=None,
+                help="The 'set' criteria for the harvesting (optional).")
+@manager.option('-i', '--identifiers', dest='identifiers', default=None,
+                help="A list of unique identifiers for records to be harvested.")
+@manager.option('-f', '--from', dest='from_date', default=None,
+                help="The lower bound date for the harvesting (optional).")
+@manager.option('-t', '--to', dest='until_date', default=None,
+                help="The upper bound date for the harvesting (optional).")
+@manager.option('-u', '--url', dest='url', default=None,
+                help="The upper bound date for the harvesting (optional).")
+@manager.option('-o', '--output', dest='output', default='stdout',
+                help="The type of the output (stdout, workflow, dir/directory).")
+@manager.option('-w', '--workflow', dest='workflow', default=None,
+                help="The workflow that should process the output.")
+@manager.option('-d', '--dir', dest='directory', default='records_harvested',
+                help="The directory that we want to send the harvesting results.")
 def queue(metadata_prefix, name, setSpec, identifiers, from_date,
           until_date, url, output, workflow, directory):
-    """Schedule a run to harvest records from an OAI repository.
-
-    :param metadata_prefix: The prefix for the metadata return (e.g. 'oai_dc').
-    :param name: The name of the OaiHARVEST object that we want to use to create the endpoint.
-    :param setSpec: The 'set' criteria for the harvesting (optional).
-    :param identifiers: A list of unique identifiers for records to be harvested.
-    :param from_date: The lower bound date for the harvesting (optional).
-    :param until_date: The upper bound date for the harvesting (optional).
-    :param url: The The url to be used to create the endpoint.
-    :param output: The type of the output (stdout, workflow, dir/directory).
-    :param workflow: The workflow that should process the output.
-    :param directory: The directory that we want to send the harvesting results.
-    """
+    """Schedule a run to harvest records from an OAI repository."""
     begin_harvesting_action(metadata_prefix, name, setSpec, identifiers, from_date,
                             until_date, url, output, workflow, directory, is_queue=True)
 
