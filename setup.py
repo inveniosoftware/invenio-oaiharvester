@@ -22,7 +22,7 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
-"""Handle metadata gathering between OAI-PMH v.2.0 compliant repositories."""
+"""Invenio module for OAI-PMH metadata harvesting between repositories."""
 
 import os
 import sys
@@ -52,6 +52,7 @@ test_requirements = [
 
 
 class PyTest(TestCommand):
+
     """PyTest Test."""
 
     user_options = [('pytest-args=', 'a', "Arguments to pass to py.test")]
@@ -91,7 +92,7 @@ with open(os.path.join('invenio_oaiharvester', 'version.py'), 'rt') as fp:
     version = g['__version__']
 
 setup(
-    name='Invenio OAIHarvester',
+    name='invenio-oaiharvester',
     version=version,
     description=__doc__,
     long_description=readme + '\n\n' + history,
