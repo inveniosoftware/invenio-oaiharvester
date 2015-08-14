@@ -22,7 +22,7 @@
     as an Intergovernmental Organization or submit itself to any jurisdiction.
 
 ======================
- Invenio OAIHarvester
+ Invenio-OAIHarvester
 ======================
 
 .. image:: https://img.shields.io/travis/inveniosoftware/invenio-oaiharvester.svg
@@ -41,8 +41,7 @@
         :target: https://github.com/inveniosoftware/invenio-oaiharvester/blob/master/LICENSE
 
 
-The OAI Harvest module handles metadata gathering between OAI-PMH v.2.0
-compliant repositories.
+Invenio module for OAI-PMH metadata harvesting between repositories.
 
 * Free software: GPLv2 license
 * Documentation: https://invenio-oaiharvester.readthedocs.org.
