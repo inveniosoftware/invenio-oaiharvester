@@ -115,7 +115,7 @@ def arxiv_plot_extract(obj, eng):
         get_tarball_from_arxiv,
         get_marcxml_plots_from_tarball
     )
-    from invenio.modules.workflows.utils import convert_marcxml_to_bibfield
+    from invenio_workflows.utils import convert_marcxml_to_bibfield
     from invenio.utils.shell import Timeout
 
     if "_result" not in obj.extra_data:
@@ -166,7 +166,7 @@ def arxiv_refextract(obj, eng):
     """
     from invenio.legacy.refextract.api import extract_references_from_file_xml
     from invenio.utils.plotextractor.api import get_pdf_from_arxiv
-    from invenio.modules.workflows.utils import convert_marcxml_to_bibfield
+    from invenio_workflows.utils import convert_marcxml_to_bibfield
 
     if "_result" not in obj.extra_data:
         obj.extra_data["_result"] = {}
@@ -224,7 +224,7 @@ def arxiv_author_list(stylesheet="authorlist2marcxml.xsl"):
         from invenio.legacy.bibconvert.xslt_engine import convert
         from invenio.utils.plotextractor.api import get_tarball_from_arxiv
         from invenio.utils.plotextractor.cli import get_defaults
-        from invenio.modules.workflows.utils import convert_marcxml_to_bibfield
+        from invenio_workflows.utils import convert_marcxml_to_bibfield
         from invenio.utils.plotextractor.converter import untar
         from invenio.utils.shell import Timeout
 

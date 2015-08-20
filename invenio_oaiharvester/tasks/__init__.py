@@ -21,7 +21,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 from invenio.celery import celery
 
-from invenio.modules.workflows.api import start_delayed
+from invenio_workflows.api import start_delayed
 
 from ..api import get_records, list_records
 from ..errors import WrongOutputIdentifier

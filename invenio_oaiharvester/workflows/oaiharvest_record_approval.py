@@ -23,16 +23,16 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 from flask import render_template
 
-from invenio.modules.workflows.tasks.logic_tasks import (
+from invenio_workflows.tasks.logic_tasks import (
     workflow_else,
     workflow_if,
 )
-from invenio.modules.workflows.tasks.marcxml_tasks import (
+from invenio_workflows.tasks.marcxml_tasks import (
     approve_record,
     convert_record,
     was_approved
 )
-from invenio.modules.workflows.tasks.workflows_tasks import log_info
+from invenio_workflows.tasks.workflows_tasks import log_info
 
 from invenio_records.api import Record
 
