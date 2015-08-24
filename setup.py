@@ -39,6 +39,7 @@ requirements = [
     'invenio-records>=0.2.0',
     'invenio-workflows>=0.1.0',
     'sickle>=0.4',  # FIXME grab next release for full arXiv.org support
+    'invenio-upgrader>=0.1.0',
     # FIXME 'Invenio>=2.0.3',
 ]
 
