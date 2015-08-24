@@ -85,7 +85,7 @@ def schedule_harvest(output, workflow, directory, name, records):
     :param workflow: The workflow that should process the output.
     :param directory: The directory that we want to send the harvesting results.
     :param name: The name of the OaiHARVEST object.
-    :param records: An iterator of harvested records.
+    :param records: A generator of harvested records.
     """
     if output == 'stdout':
         total = print_to_stdout(records)
@@ -96,7 +96,11 @@ def schedule_harvest(output, workflow, directory, name, records):
         print_total_records(total)
     elif output == 'workflow':
         workflow_name = get_workflow_name(workflow, name)
+        total = 0
+        # records is a generator object, hence special total counting
         for record in records:
             start_delayed(workflow_name, [record.raw])
+            total += 1
+        print_total_records(total)
     else:
         raise WrongOutputIdentifier('Output type not recognized.')

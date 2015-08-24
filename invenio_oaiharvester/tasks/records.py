@@ -73,7 +73,7 @@ def quick_match_record(keys_to_check=None, collection=None):
             keys = [("control_number", "control_number")]
 
         from invenio_records.api import Record
-        from invenio.modules.search.api import Query
+        from invenio_search.api import Query
 
         try:
             record = Record(obj.data.dumps())
