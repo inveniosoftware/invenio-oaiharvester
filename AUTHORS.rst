@@ -34,6 +34,7 @@ Contact us at `info@invenio-software.org
 - Alessio Deiana <alessio.deiana@cern.ch>
 - Georgios Papoutsakis <georgios.papoutsakis@cern.ch>
 - Guillaume Lastecoueres <PX9e@gmx.fr>
+- Ilias Koutsakis <ilias.koutsakis@cern.ch>
 - Jacopo Notarstefano <jacopo.notarstefano@cern.ch>
 - Jan Aage Lavik <jan.age.lavik@cern.ch>
 - Jerome Caffaro <jerome.caffaro@cern.ch>
@@ -42,7 +43,7 @@ Contact us at `info@invenio-software.org
 - Lars Holm Nielsen <lars.holm.nielsen@cern.ch>
 - Leonardo Rossi <leonardo.r@cern.ch>
 - Ludmila Marian <ludmila.marian@gmail.com>
-- Ilias Koutsakis <ilias.koutsakis@cern.ch>
+- Marco Neumann <marco@crepererum.net>
 - Samuele Kaplun <samuele.kaplun@cern.ch>
 - Sebastian Witowski <sebastian.witowski@cern.ch>
 - Tibor Simko <tibor.simko@cern.ch>

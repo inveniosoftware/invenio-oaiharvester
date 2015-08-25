@@ -24,6 +24,13 @@
 Changes
 =======
 
-Version 0.1.0 (release 2015-08-14)
+Version 0.1.1 (released 2015-08-25)
+
+- Adds missing `invenio_upgrader` dependency and amends past upgrade
+  recipes following its separation into standalone package.
+
+- Fixes imports due to separation of invenio-workflows. (#9)
+
+Version 0.1.0 (released 2015-08-14)
 
 - Initial public release
