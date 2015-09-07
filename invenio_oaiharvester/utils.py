@@ -164,21 +164,11 @@ def find_matching_files(basedir, filetypes):
     return files_list
 
 
-def get_identifier_names(identifier):
+def get_identifier_names(identifiers):
     """Return list of identifiers from a comma-separated string."""
-    if identifier:
-        # Let's see if the user had a comma-separated list of OAI ids.
-        stripped_idents = []
-        for ident in identifier.split(","):
-            ident = ident.strip()
-            if not ident.startswith("oai:arXiv.org"):
-                if "oai:arxiv.org" in ident.lower():
-                    ident = ident.replace("oai:arxiv.org", "oai:arXiv.org")
-                elif "arXiv" in ident:
-                    # New style arXiv ID
-                    ident = ident.replace("arXiv", "oai:arXiv.org")
-            stripped_idents.append(ident)
-        return stripped_idents
+    if identifiers is not None:
+        return [s.strip() for s in identifiers.split(',')]
+    return []
 
 
 def update_lastrun(oaiharvest_object):
