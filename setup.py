@@ -113,8 +113,7 @@ setup(
     extras_require={
         'docs': [
             'Sphinx>=1.3',
-            'sphinx_rtd_theme>=0.1.7',
-            'mock==1.0.0',  # Otherwise ultramock.py fails
+            'sphinx_rtd_theme>=0.1.7'
         ],
         'tests': test_requirements
     },
