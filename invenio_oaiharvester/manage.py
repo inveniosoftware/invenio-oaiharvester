@@ -132,7 +132,7 @@ def begin_harvesting_action(metadata_prefix, name, setSpec, identifiers, from_da
 
 def main():
     """Run manager."""
-    from invenio.base.factory import create_app
+    from invenio_base.factory import create_app
     app = create_app()
     manager.app = app
     manager.run()

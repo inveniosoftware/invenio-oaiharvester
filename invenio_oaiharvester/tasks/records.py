@@ -30,7 +30,7 @@ from werkzeug.utils import import_string
 
 def convert_record_to_json(obj, eng):
     """Convert one record from MARCXML to JSON."""
-    from invenio.base.globals import cfg
+    from invenio_base.globals import cfg
     source = StringIO.StringIO(obj.data)
 
     processor = cfg["RECORD_PROCESSORS"]["marcxml"]

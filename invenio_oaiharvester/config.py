@@ -24,7 +24,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 import os
 
-from invenio.base.config import CFG_DATADIR
+from invenio_base.config import CFG_DATADIR
 
 
 OAIHARVESTER_DEFAULT_NAMESPACE_MAP = {
