@@ -21,8 +21,8 @@
 
 from __future__ import absolute_import, print_function, unicode_literals
 
-from invenio.ext.sqlalchemy import db
-from invenio.ext.sqlalchemy.utils import session_manager
+from invenio_ext.sqlalchemy import db
+from invenio_ext.sqlalchemy.utils import session_manager
 
 
 def get_default_arguments():

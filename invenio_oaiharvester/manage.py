@@ -25,7 +25,7 @@ or printed to stdout (default).
 
 from __future__ import absolute_import, print_function, unicode_literals
 
-from invenio.ext.script import Manager
+from invenio_ext.script import Manager
 
 from .errors import IdentifiersOrDates
 from .tasks import get_specific_records, list_records_from_dates
