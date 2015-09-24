@@ -19,7 +19,7 @@
 
 from __future__ import absolute_import, print_function, unicode_literals
 
-from invenio.celery import celery
+from invenio_celery import celery
 
 from invenio_workflows.api import start_delayed
 

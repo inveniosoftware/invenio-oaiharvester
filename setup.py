@@ -35,15 +35,15 @@ history = open('CHANGES.rst').read()
 
 requirements = [
     'Flask>=0.10.1',
-    'six>=1.7.2',
     'invenio-base>=0.1.0',
+    'invenio-celery>=0.1.0',
+    'invenio-ext>=0.2.1',
     'invenio-records>=0.2.0',
-    'invenio-workflows>=0.1.0',
-    'sickle>=0.4',  # FIXME grab next release for full arXiv.org support
     'invenio-upgrader>=0.1.0',
     'invenio-utils>=0.1.1',
-    'invenio-ext>=0.2.1',
-    # FIXME 'Invenio>=2.0.3',
+    'invenio-workflows>=0.1.0',
+    'sickle>=0.4',  # FIXME grab next release for full arXiv.org support
+    'six>=1.7.2',
 ]
 
 test_requirements = [
