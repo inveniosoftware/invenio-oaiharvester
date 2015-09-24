@@ -29,7 +29,7 @@ from datetime import datetime
 from lxml import etree
 
 from invenio_base.globals import cfg
-from invenio.utils.shell import run_shell_command
+from invenio_utils.shell import run_shell_command
 
 REGEXP_OAI_ID = re.compile("<identifier.*?>(.*?)<\/identifier>", re.DOTALL)
 
