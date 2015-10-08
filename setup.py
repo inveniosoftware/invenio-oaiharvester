@@ -35,23 +35,25 @@ history = open('CHANGES.rst').read()
 
 requirements = [
     'Flask>=0.10.1',
-    'invenio-base>=0.1.0',
-    'invenio-celery>=0.1.0',
-    'invenio-ext>=0.2.1',
-    'invenio-records>=0.2.0',
-    'invenio-upgrader>=0.1.0',
-    'invenio-utils>=0.1.1',
-    'invenio-workflows>=0.1.0',
-    'sickle>=0.4',  # FIXME grab next release for full arXiv.org support
+    'invenio-base>=0.3.1,<1.0.0',
+    'invenio-celery>=0.1.1,<1.0.0',
+    'invenio-ext>=0.3.1,<1.0.0',
+    'invenio-records>=0.3.4.post1,<1.0.0',
+    'invenio-upgrader>=0.2.0,<1.0.0',
+    'invenio-utils>=0.2.0,<1.0.0',
+    'invenio-workflows>=0.1.2,<1.0.0',
+    'sickle>=0.5',
     'six>=1.7.2',
 ]
 
 test_requirements = [
-    'Flask-Testing>=0.4.2',
+    'unittest2>=1.1.0',
+    'Flask_Testing>=0.4.2',
     'pytest>=2.8.0',
-    'pytest-cov>=2.1.0',
-    'pytest-pep8>=1.0.6',
+    'pytest_cov>=2.1.0',
+    'pytest_pep8>=1.0.6',
     'coverage>=4.0.0',
+    'invenio-testing>=0.1.0',
     'httpretty>=0.8.3',
 ]
 

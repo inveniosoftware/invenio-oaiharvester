@@ -21,7 +21,7 @@ import os
 import httpretty
 
 from invenio_oaiharvester.api import get_records
-from invenio.testsuite import InvenioTestCase, make_test_suite, run_test_suite
+from invenio_testing import InvenioTestCase
 
 
 class OaiHarvesterTests(InvenioTestCase):
@@ -64,8 +64,3 @@ class OaiHarvesterTests(InvenioTestCase):
             )[0].text
             self.assertEqual(identifier_in_request,
                              "1507.03011")
-
-TEST_SUITE = make_test_suite(OaiHarvesterTests)
-
-if __name__ == "__main__":
-    run_test_suite(TEST_SUITE)

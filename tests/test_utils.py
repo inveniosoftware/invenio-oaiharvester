@@ -21,7 +21,7 @@
 
 import os
 
-from invenio.testsuite import InvenioTestCase, make_test_suite, run_test_suite
+from invenio_testing import InvenioTestCase
 
 
 class OAIHarvesterUtils(InvenioTestCase):
@@ -107,9 +107,3 @@ class OAIHarvesterUtils(InvenioTestCase):
         self.assertEqual(
             get_identifier_names(sample),
             ["oai:mysite.com:1234/testing", "oai:example.com:record/1234"])
-
-
-TEST_SUITE = make_test_suite(OAIHarvesterUtils)
-
-if __name__ == "__main__":
-    run_test_suite(TEST_SUITE)

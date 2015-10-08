@@ -26,7 +26,7 @@ include *.in
 include *.py
 include *.rst
 include *.txt
-include .editorconfig .dockerignore .travis.yml .kwalitee.yml
+include .editorconfig .dockerignore .travis.yml .kwalitee.yml .travis.invenio.cfg
 include LICENSE
 include babel.ini
 include pytest.ini
