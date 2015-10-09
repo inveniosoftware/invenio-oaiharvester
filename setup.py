@@ -54,7 +54,7 @@ test_requirements = [
     'pytest_pep8>=1.0.6',
     'coverage>=4.0.0',
     'invenio-testing>=0.1.0',
-    'httpretty>=0.8.3',
+    'responses>=0.4.0',
 ]
 
 

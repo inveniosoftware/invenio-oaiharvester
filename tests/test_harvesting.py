@@ -18,7 +18,7 @@
 # 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
 
 import os
-import httpretty
+import responses
 
 from invenio_oaiharvester.api import get_records
 from invenio_testing import InvenioTestCase
@@ -26,16 +26,18 @@ from invenio_testing import InvenioTestCase
 
 class OaiHarvesterTests(InvenioTestCase):
 
-    @httpretty.activate
+    @responses.activate
     def test_get_from_identifiers(self):
         raw_xml = open(os.path.join(
             os.path.dirname(__file__), "data/sample_oai_dc_response.xml"
         )).read()
 
-        httpretty.register_uri(httpretty.GET,
-                               'http://export.arxiv.org/oai2',
-                               body=raw_xml,
-                               content_type='text/xml')
+        responses.add(
+            responses.GET,
+            'http://export.arxiv.org/oai2',
+            body=raw_xml,
+            content_type='text/xml'
+        )
         for rec in get_records(['oai:arXiv.org:1507.03011'],
                                url='http://export.arxiv.org/oai2'):
             identifier_in_request = rec.xml.xpath(
@@ -45,16 +47,18 @@ class OaiHarvesterTests(InvenioTestCase):
             self.assertEqual(identifier_in_request,
                              "http://arxiv.org/abs/1507.03011")
 
-    @httpretty.activate
+    @responses.activate
     def test_get_from_identifiers_with_prefix(self):
         raw_xml = open(os.path.join(
             os.path.dirname(__file__), "data/sample_arxiv_response.xml"
         )).read()
 
-        httpretty.register_uri(httpretty.GET,
-                               'http://export.arxiv.org/oai2',
-                               body=raw_xml,
-                               content_type='text/xml')
+        responses.add(
+            responses.GET,
+            'http://export.arxiv.org/oai2',
+            body=raw_xml,
+            content_type='text/xml'
+        )
         for rec in get_records(['oai:arXiv.org:1507.03011'],
                                metadata_prefix="arXiv",
                                url='http://export.arxiv.org/oai2'):
