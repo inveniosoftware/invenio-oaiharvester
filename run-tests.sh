@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of Invenio.
-# Copyright (C) 2015, 2016 CERN.
+# Copyright (C) 2016 CERN.
 #
 # Invenio is free software; you can redistribute it
 # and/or modify it under the terms of the GNU General Public License as
@@ -23,31 +23,9 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
 
-[aliases]
-test=pytest
-
-[build_sphinx]
-source-dir = docs/
-build-dir = docs/_build
-all_files = 1
-
-[bdist_wheel]
-universal = 1
-
-[compile_catalog]
-directory = invenio_oaiharvester/translations/
-
-[extract_messages]
-copyright_holder = CERN
-msgid_bugs_address = info@invenio-software.org
-mapping-file = babel.ini
-output-file = invenio_oaiharvester/translations/messages.pot
-add-comments = NOTE
-
-[init_catalog]
-input-file = invenio_oaiharvester/translations/messages.pot
-output-dir = invenio_oaiharvester/translations/
-
-[update_catalog]
-input-file = invenio_oaiharvester/translations/messages.pot
-output-dir = invenio_oaiharvester/translations/
+pydocstyle invenio_oaiharvester && \
+isort -rc -c -df **/*.py && \
+check-manifest --ignore ".travis-*" && \
+sphinx-build -qnNW docs docs/_build/html && \
+python setup.py test && \
+sphinx-build -qnNW -b doctest docs docs/_build/doctest

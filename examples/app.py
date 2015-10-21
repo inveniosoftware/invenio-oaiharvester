@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of Invenio.
-# Copyright (C) 2015, 2016 CERN.
+# Copyright (C) 2016 CERN.
 #
 # Invenio is free software; you can redistribute it
 # and/or modify it under the terms of the GNU General Public License as
@@ -23,31 +23,22 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
 
-[aliases]
-test=pytest
+"""Minimal Flask application example for development.
 
-[build_sphinx]
-source-dir = docs/
-build-dir = docs/_build
-all_files = 1
+Run example development server:
 
-[bdist_wheel]
-universal = 1
+.. code-block:: console
 
-[compile_catalog]
-directory = invenio_oaiharvester/translations/
+   $ cd examples
+   $ flask -a app.py --debug run
+"""
 
-[extract_messages]
-copyright_holder = CERN
-msgid_bugs_address = info@invenio-software.org
-mapping-file = babel.ini
-output-file = invenio_oaiharvester/translations/messages.pot
-add-comments = NOTE
+from __future__ import absolute_import, print_function
 
-[init_catalog]
-input-file = invenio_oaiharvester/translations/messages.pot
-output-dir = invenio_oaiharvester/translations/
+from flask import Flask
 
-[update_catalog]
-input-file = invenio_oaiharvester/translations/messages.pot
-output-dir = invenio_oaiharvester/translations/
+from invenio_oaiharvester import InvenioOAIHarvester
+
+# Create Flask application
+app = Flask(__name__)
+InvenioOAIHarvester(app)

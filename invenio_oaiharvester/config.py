@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of Invenio.
-# Copyright (C) 2014, 2015 CERN.
+# Copyright (C) 2014, 2015, 2016 CERN.
 #
 # Invenio is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License as
@@ -19,21 +19,12 @@
 
 """OAI harvest config."""
 
-
-from __future__ import absolute_import, print_function, unicode_literals
-
-import os
-
-from invenio_base.config import CFG_DATADIR
-
+from __future__ import absolute_import, print_function
 
 OAIHARVESTER_DEFAULT_NAMESPACE_MAP = {
     "OAI-PMH": "http://www.openarchives.org/OAI/2.0/",
 }
 """The default namespace used when handling OAI-PMH results."""
 
-OAIHARVESTER_STORAGEDIR = os.path.join(CFG_DATADIR, "oaiharvester", "storage")
-"""Path to a storage directory where the oaiharvester may put files."""
-
-OAIHARVESTER_RECORD_ARXIV_ID_LOOKUP = "system_control_number.value"
-"""Path to the arXiv ID value used by sample post-process tasks."""
+OAIHARVESTER_WORKDIR = None
+"""Path to directory for oaiharvester related files, default: instance_path."""

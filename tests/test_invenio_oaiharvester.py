@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of Invenio.
-# Copyright (C) 2015, 2016 CERN.
+# Copyright (C) 2016 CERN.
 #
 # Invenio is free software; you can redistribute it
 # and/or modify it under the terms of the GNU General Public License as
@@ -23,31 +23,32 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
 
-[aliases]
-test=pytest
+"""Module tests."""
 
-[build_sphinx]
-source-dir = docs/
-build-dir = docs/_build
-all_files = 1
+from __future__ import absolute_import, print_function
 
-[bdist_wheel]
-universal = 1
+from flask import Flask
+from flask_cli import FlaskCLI
 
-[compile_catalog]
-directory = invenio_oaiharvester/translations/
+from invenio_oaiharvester import InvenioOAIHarvester
 
-[extract_messages]
-copyright_holder = CERN
-msgid_bugs_address = info@invenio-software.org
-mapping-file = babel.ini
-output-file = invenio_oaiharvester/translations/messages.pot
-add-comments = NOTE
 
-[init_catalog]
-input-file = invenio_oaiharvester/translations/messages.pot
-output-dir = invenio_oaiharvester/translations/
+def test_version():
+    """Test version import."""
+    from invenio_oaiharvester import __version__
+    assert __version__
 
-[update_catalog]
-input-file = invenio_oaiharvester/translations/messages.pot
-output-dir = invenio_oaiharvester/translations/
+
+def test_init():
+    """Test extension initialization."""
+    app = Flask('testapp')
+    FlaskCLI(app)
+    ext = InvenioOAIHarvester(app)
+    assert 'invenio-oaiharvester' in app.extensions
+
+    app = Flask('testapp')
+    FlaskCLI(app)
+    ext = InvenioOAIHarvester()
+    assert 'invenio-oaiharvester' not in app.extensions
+    ext.init_app(app)
+    assert 'invenio-oaiharvester' in app.extensions
