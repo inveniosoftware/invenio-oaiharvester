@@ -28,7 +28,7 @@ from invenio_base.config import CFG_DATADIR
 
 
 OAIHARVESTER_DEFAULT_NAMESPACE_MAP = {
-    None: "http://www.openarchives.org/OAI/2.0/",
+    "OAI-PMH": "http://www.openarchives.org/OAI/2.0/",
 }
 """The default namespace used when handling OAI-PMH results."""
 

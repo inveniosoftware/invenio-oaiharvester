@@ -66,7 +66,7 @@ def record_extraction_from_string(xml_string, oai_namespace="http://www.openarch
     """
     if oai_namespace:
         nsmap = {
-            None: oai_namespace
+            'OAI-PMH': oai_namespace
         }
     else:
         nsmap = cfg.get("OAIHARVESTER_DEFAULT_NAMESPACE_MAP")
@@ -102,7 +102,7 @@ def identifier_extraction_from_string(xml_string, oai_namespace="http://www.open
     """
     if oai_namespace:
         nsmap = {
-            None: oai_namespace
+            'OAI-PMH': oai_namespace
         }
     else:
         nsmap = cfg.get("OAIHARVESTER_DEFAULT_NAMESPACE_MAP")
