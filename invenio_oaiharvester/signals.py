@@ -1,7 +1,7 @@
-# -*- coding: utf-8 -*-
+# -*- coding: utf-8; -*-
 #
 # This file is part of Invenio.
-# Copyright (C) 2015 CERN.
+# Copyright (C) 2016 CERN.
 #
 # Invenio is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License as
@@ -10,18 +10,28 @@
 #
 # Invenio is distributed in the hope that it will be useful, but
 # WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
 # General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
 # along with Invenio; if not, write to the Free Software Foundation, Inc.,
 # 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
 
-"""OAIHarverster Blueprint."""
+"""OAI harvester signals."""
 
-from __future__ import absolute_import, print_function, unicode_literals
+from blinker import Namespace
 
-from flask import Blueprint
+_signals = Namespace()
 
-blueprint = Blueprint('oaiharvester', __name__,
-                      template_folder='templates', static_folder='static')
+oaiharvest_finished = _signals.signal('oaiharvest-finished')
+"""
+This signal is sent when a harvest has completed.
+
+Example subscriber
+
+.. code-block:: python
+
+    def listener(sender, records, *args, **kwargs):
+        for record in records:
+            pass
+"""

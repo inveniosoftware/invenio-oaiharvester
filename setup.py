@@ -41,7 +41,6 @@ requirements = [
     'invenio-records>=0.3.4.post1,<1.0.0',
     'invenio-upgrader>=0.2.0,<1.0.0',
     'invenio-utils>=0.2.0,<1.0.0',
-    'invenio-workflows>=0.1.2,<1.0.0',
     'sickle>=0.5',
     'six>=1.7.2',
 ]

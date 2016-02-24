@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of Invenio.
-# Copyright (C) 2011, 2012, 2013, 2014, 2015 CERN.
+# Copyright (C) 2011, 2012, 2013, 2014, 2015, 2016 CERN.
 #
 # Invenio is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License as
@@ -21,24 +21,10 @@
 
 from __future__ import absolute_import, print_function, unicode_literals
 
+import datetime
+
 from invenio_ext.sqlalchemy import db
 from invenio_ext.sqlalchemy.utils import session_manager
-
-
-def get_default_arguments():
-    """Return default values for arguments."""
-    arguments_default = {'c_stylesheet': '',
-                         'r_kb-rep-no-file': '',
-                         'r_format': '',
-                         'u_name': '',
-                         'a_rt-queue': '',
-                         'r_kb-journal-file': '',
-                         'u_priority': '',
-                         'a_stylesheet': '',
-                         't_doctype': '',
-                         'f_filter-file': '',
-                         'p_extraction-source': []}
-    return arguments_default
 
 
 class OaiHARVEST(db.Model):
@@ -52,39 +38,19 @@ class OaiHARVEST(db.Model):
     baseurl = db.Column(db.String(255), nullable=False, server_default='')
     metadataprefix = db.Column(db.String(255), nullable=False,
                                server_default='oai_dc')
-    arguments = db.Column(db.MarshalBinary(default_value=get_default_arguments(),
-                                           force_type=dict), nullable=False)
     comment = db.Column(db.Text, nullable=True)
     name = db.Column(db.String(255), nullable=False)
-    lastrun = db.Column(db.DateTime, nullable=True)
-    postprocess = db.Column(db.String(20), nullable=False,
-                            server_default='h')
-    workflows = db.Column(db.String(255),
-                          nullable=False,
-                          server_default='')
+    lastrun = db.Column(db.DateTime, default=datetime.datetime(year=1900, month=1, day=1), nullable=True)
     setspecs = db.Column(db.Text, nullable=False)
-
-    def to_dict(self):
-        """Get model as dict."""
-        dict_representation = self.__dict__
-        del dict_representation["_sa_instance_state"]
-        return dict_representation
-
-    @classmethod
-    def get(cls, *criteria, **filters):
-        """Wrapper for filter and filter_by functions of SQLAlchemy.
-
-        .. code-block:: python
-
-            OaiHARVEST.get(OaiHARVEST.id == 1)
-            OaiHARVEST.get(id=1)
-        """
-        return cls.query.filter(*criteria).filter_by(**filters)
 
     @session_manager
     def save(self):
         """Save object to persistent storage."""
         db.session.add(self)
+
+    def update_lastrun(self, new_date=None):
+        """Update the 'lastrun' attribute of the OaiHARVEST object to now."""
+        self.lastrun = new_date or datetime.datetime.now()
 
 
 __all__ = ('OaiHARVEST',)

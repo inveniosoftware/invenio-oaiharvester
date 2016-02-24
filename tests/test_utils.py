@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of Invenio.
-# Copyright (C) 2014, 2015 CERN.
+# Copyright (C) 2014, 2015, 2016 CERN.
 #
 # Invenio is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License as
@@ -17,7 +17,7 @@
 # along with Invenio; if not, write to the Free Software Foundation, Inc.,
 # 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
 
-"""Test for workflow tasks used by OAI harvester."""
+"""Test for utilities used by OAI harvester."""
 
 import os
 
@@ -77,7 +77,7 @@ class OAIHarvesterUtils(InvenioTestCase):
         from invenio_oaiharvester.utils import record_extraction_from_string
         raw_xml = open(os.path.join(
             os.path.dirname(__file__),
-            "data/sample_arxiv_response_listrecords.xml"
+            "data/sample_inspire_response_listrecords.xml"
         )).read()
         self.assertEqual(len(record_extraction_from_string(raw_xml)),
                          2)

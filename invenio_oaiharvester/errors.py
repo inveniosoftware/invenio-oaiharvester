@@ -1,7 +1,7 @@
 # -*- coding: utf-8; -*-
 #
 # This file is part of Invenio.
-# Copyright (C) 2015 CERN.
+# Copyright (C) 2015, 2016 CERN.
 #
 # Invenio is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License as
@@ -36,11 +36,3 @@ class WrongDateCombination(Exception):
 
 class IdentifiersOrDates(Exception):
     """Identifiers cannot be used in combination with dates."""
-
-
-class WrongOutputIdentifier(Exception):
-    """Output type not recognized. Try 'workflow', directory' or omit for stdout."""
-
-
-class WorkflowNotFound(Exception):
-    """Workflow not found. Try '-o workflow -w <workflow name> or provide a name (-n <name>)."""

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of Invenio.
-# Copyright (C) 2015 CERN.
+# Copyright (C) 2015, 2016 CERN.
 #
 # Invenio is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License as
@@ -19,6 +19,8 @@
 
 from __future__ import absolute_import, print_function, unicode_literals
 
+import datetime
+
 from sickle import Sickle
 
 from .errors import NameOrUrlMissing, WrongDateCombination
@@ -26,7 +28,7 @@ from .utils import get_oaiharvest_object
 
 
 def list_records(metadata_prefix=None, from_date=None, until_date=None,
-                 url=None, name=None, setSpec=None):
+                 url=None, name=None, setspecs=None):
     """Harvest records from an OAI repo, based on datestamp and/or set parameters.
 
     :param metadata_prefix: The prefix for the metadata return (defaults to 'oai_dc').
@@ -34,20 +36,22 @@ def list_records(metadata_prefix=None, from_date=None, until_date=None,
     :param until_date: The upper bound date for the harvesting (optional).
     :param url: The The url to be used to create the endpoint.
     :param name: The name of the OaiHARVEST object that we want to use to create the endpoint.
-    :param setSpec: The 'set' criteria for the harvesting (optional).
+    :param setspecs: The 'set' criteria for the harvesting (optional).
     :return: An iterator of harvested records.
     """
-    if url:
-        request = Sickle(url)
-    elif name:
-        request, _metadata_prefix, lastrun = get_from_oai_name(name)
+    if name:
+        url, _metadata_prefix, lastrun, _setspecs = get_info_by_oai_name(name)
 
         # In case we provide a prefix, we don't want it to be
         # overwritten by the one we get from the name variable.
         if metadata_prefix is None:
             metadata_prefix = _metadata_prefix
-    else:
+        if setspecs is None:
+            setspecs = _setspecs
+    elif not url:
         raise NameOrUrlMissing("Retry using the parameters -n <name> or -u <url>.")
+
+    request = Sickle(url)
 
     # By convention, when we have a url we have no lastrun, and when we use
     # the name we can either have from_date (if provided) or lastrun.
@@ -60,12 +64,19 @@ def list_records(metadata_prefix=None, from_date=None, until_date=None,
     if (dates['until'] is not None) and (dates['from'] > dates['until']):
         raise WrongDateCombination("'Until' date larger than 'from' date.")
 
-    if metadata_prefix is None:
-        metadata_prefix = "oai_dc"
-
-    return request.ListRecords(metadataPrefix=metadata_prefix,
-                               set=setSpec,
-                               **dates)
+    lastrun_date = datetime.datetime.now()
+    records = []
+    for spec in setspecs.split():
+        for record in request.ListRecords(metadataPrefix=metadata_prefix or "oai_dc",
+                                          set=spec,
+                                          **dates):
+            records.append(record)
+    # Update lastrun?
+    if from_date is None and until_date is None and name is not None:
+        oai_source = get_oaiharvest_object(name)
+        oai_source.update_lastrun(lastrun_date)
+        oai_source.save()
+    return request, records
 
 
 def get_records(identifiers, metadata_prefix=None, url=None, name=None):
@@ -77,39 +88,34 @@ def get_records(identifiers, metadata_prefix=None, url=None, name=None):
     :param name: The name of the OaiHARVEST object that we want to use to create the endpoint.
     :return: An iterator of harvested records.
     """
-    if url:
-        request = Sickle(url)
-    elif name:
-        request, _metadata_prefix, _ = get_from_oai_name(name)
+    if name:
+        url, _metadata_prefix, _, __ = get_info_by_oai_name(name)
 
         # In case we provide a prefix, we don't want it to be
         # overwritten by the one we get from the name variable.
         if metadata_prefix is None:
             metadata_prefix = _metadata_prefix
-    else:
+    elif not url:
         raise NameOrUrlMissing("Retry using the parameters -n <name> or -u <url>.")
 
-    if metadata_prefix is None:
-        metadata_prefix = "oai_dc"
-
+    request = Sickle(url)
+    records = []
     for identifier in identifiers:
         arguments = {
             'identifier': identifier,
-            'metadataPrefix': metadata_prefix
+            'metadataPrefix': metadata_prefix or "oai_dc"
         }
-        yield request.GetRecord(**arguments)
+        records.append(request.GetRecord(**arguments))
+    return request, records
 
 
-def get_from_oai_name(name):
+def get_info_by_oai_name(name):
     """Get basic OAI request data from the OaiHARVEST model.
 
     :param name: name of the source (OaiHARVEST.name)
 
-    :return: (Sickle obj, metadataprefix, lastrun)
+    :return: (url, metadataprefix, lastrun as YYYY-MM-DD, setspecs)
     """
     obj = get_oaiharvest_object(name)
-
-    req = Sickle(obj.baseurl)
-    metadata_prefix = obj.metadataprefix
-    lastrun = obj.lastrun
-    return req, metadata_prefix, lastrun
+    lastrun = obj.lastrun.strftime("%Y-%m-%d")
+    return obj.baseurl, obj.metadataprefix, lastrun, obj.setspecs
