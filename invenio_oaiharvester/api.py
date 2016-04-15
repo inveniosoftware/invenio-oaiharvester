@@ -45,6 +45,7 @@ def list_records(metadata_prefix=None, from_date=None, until_date=None,
     :param setspecs: The 'set' criteria for the harvesting (optional).
     :return: request object, list of harvested records
     """
+    lastrun = None
     if name:
         url, _metadata_prefix, lastrun, _setspecs = get_info_by_oai_name(name)
 
@@ -64,7 +65,7 @@ def list_records(metadata_prefix=None, from_date=None, until_date=None,
     # By convention, when we have a url we have no lastrun, and when we use
     # the name we can either have from_date (if provided) or lastrun.
     dates = {
-        'from': lastrun if from_date is None else from_date,
+        'from': from_date or lastrun,
         'until': until_date
     }
 
