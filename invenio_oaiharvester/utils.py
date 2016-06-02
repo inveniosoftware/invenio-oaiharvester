@@ -127,7 +127,9 @@ def identifier_extraction_from_string(
 def get_identifier_names(identifiers):
     """Return list of identifiers from a comma-separated string."""
     if identifiers is not None:
-        return [s.strip() for s in identifiers.split(',')]
+        if not isinstance(identifiers, (list, tuple)):
+            identifiers = identifiers.split(',')
+        return [s.strip() for s in identifiers]
     return []
 
 
@@ -196,7 +198,7 @@ def write_to_dir(records, output_dir, max_records=1000, encoding='utf-8'):
     f = codecs.open(files_created[0], 'w+', encoding=encoding)
     for record in records:
         total += 1
-        if total % max_records == 0:
+        if total > 1 and total % max_records == 0:
             # we need a new file to write to
             f.close()
             files_created.append(create_file_name(output_path))

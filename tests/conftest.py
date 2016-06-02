@@ -33,7 +33,7 @@ import tempfile
 import pytest
 from flask import Flask
 from flask_celeryext import FlaskCeleryExt
-from flask_cli import FlaskCLI
+from flask_cli import FlaskCLI, ScriptInfo
 from invenio_db import InvenioDB, db
 
 from invenio_oaiharvester import InvenioOAIHarvester
@@ -73,7 +73,13 @@ def app(request):
     return app
 
 
-@pytest.fixture
+@pytest.fixture()
+def script_info(app):
+    """Get ScriptInfo object for testing CLI."""
+    return ScriptInfo(create_app=lambda info: app)
+
+
+@pytest.fixture()
 def sample_config(app):
     source_name = "arXiv"
     with app.app_context():
@@ -88,7 +94,7 @@ def sample_config(app):
     return source_name
 
 
-@pytest.fixture
+@pytest.fixture()
 def sample_record_xml():
     raw_xml = open(os.path.join(
         os.path.dirname(__file__),
@@ -97,11 +103,20 @@ def sample_record_xml():
     return raw_xml
 
 
-@pytest.fixture
+@pytest.fixture()
 def sample_record_xml_oai_dc():
     raw_xml = open(os.path.join(
         os.path.dirname(__file__),
         "data/sample_oai_dc_response.xml"
+    )).read()
+    return raw_xml
+
+
+@pytest.fixture()
+def sample_empty_set():
+    raw_xml = open(os.path.join(
+        os.path.dirname(__file__),
+        "data/sample_empty_response.xml"
     )).read()
     return raw_xml
 

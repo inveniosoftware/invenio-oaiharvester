@@ -25,6 +25,7 @@ import pytest
 import responses
 
 from invenio_oaiharvester import get_records, list_records
+from invenio_oaiharvester.errors import WrongDateCombination
 
 
 @responses.activate
@@ -70,6 +71,22 @@ def test_raise_missing_info(app):
     with app.app_context():
         with pytest.raises(NameOrUrlMissing):
             list_records()
+        with pytest.raises(NameOrUrlMissing):
+            get_records([])
+
+
+def test_raise_wrong_date(app):
+    """Check harvesting of records from multiple setspecs."""
+    with app.app_context():
+        with pytest.raises(WrongDateCombination):
+            list_records(
+                metadata_prefix='arXiv',
+                from_date='2015-01-18',
+                until_date='2015-01-17',
+                url='http://export.arxiv.org/oai2',
+                name=None,
+                setspecs='physics:hep-lat'
+            )
 
 
 @responses.activate
@@ -98,6 +115,28 @@ def test_list_records(app, sample_list_xml, sample_list_xml_cs):
         )
         # 46 cs + 150 physics - 6 dupes == 190
         assert len(records) == 190
+
+
+@responses.activate
+def test_list_no_records(app, sample_empty_set):
+    """Check harvesting of records from multiple setspecs."""
+    responses.add(
+        responses.GET,
+        re.compile(r'http?://export.arxiv.org/oai2.*set=physics.*'),
+        body=sample_empty_set,
+        content_type='text/xml'
+    )
+
+    with app.app_context():
+        _, records = list_records(
+            metadata_prefix='arXiv',
+            from_date='2015-01-17',
+            until_date='2015-01-17',
+            url='http://export.arxiv.org/oai2',
+            name=None,
+            setspecs='physics:hep-lat'
+        )
+        assert not records
 
 
 @responses.activate
