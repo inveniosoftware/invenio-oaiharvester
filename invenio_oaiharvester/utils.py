@@ -191,11 +191,15 @@ def write_to_dir(records, output_dir, max_records=1000, encoding='utf-8'):
 
     :return: paths to files created, total number of records
     """
+    if not records:
+        return [], 0
+
     output_path = check_or_create_dir(output_dir)
 
     files_created = [create_file_name(output_path)]
     total = 0  # total number of records processed
     f = codecs.open(files_created[0], 'w+', encoding=encoding)
+    f.write('<ListRecords>')
     for record in records:
         total += 1
         if total > 1 and total % max_records == 0:
@@ -204,5 +208,6 @@ def write_to_dir(records, output_dir, max_records=1000, encoding='utf-8'):
             files_created.append(create_file_name(output_path))
             f = codecs.open(files_created[-1], 'w+', encoding=encoding)
         f.write(record.raw)
+    f.write('</ListRecords>')
     f.close()
     return files_created, total

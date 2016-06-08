@@ -137,6 +137,10 @@ def test_write_to_dir(app, tmpdir):
         assert len(files) == 2
         assert total == 2
 
+        files, total = write_to_dir([], tmpdir.dirname, max_records=1)
+        assert len(files) == 0
+        assert total == 0
+
 
 def test_create_file_name(tmpdir):
     """oaiharvest - testing dir creation."""
