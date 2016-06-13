@@ -1,8 +1,8 @@
-=============================
- Invenio-OAIHarvester v0.1.1
-=============================
+===============================
+ Invenio-OAIHarvester v1.0.0a1
+===============================
 
-Invenio-OAIHarvester v0.1.1 was released on August 25, 2015.
+Invenio-OAIHarvester v1.0.0a1 was released on June 15, 2016.
 
 About
 -----
@@ -11,23 +11,25 @@ Invenio module for OAI-PMH metadata harvesting between repositories.
 
 *This is an experimental development preview release.*
 
-Bug fixes
----------
 
-- Adds missing `invenio_upgrader` dependency and amends past upgrade
-  recipes following its separation into standalone package.
+Changes
+-------
 
-- Fixes imports due to separation of invenio-workflows. (#9)
+Incompatible changes
+~~~~~~~~~~~~~~~~~~~~
+
+- Brings a major rewrite based on Invenio v3.0.0 release series.
+
 
 Installation
 ------------
 
-   $ pip install invenio-oaiharvester==0.1.1
+   $ pip install invenio-oaiharvester==1.0.0a1
 
 Documentation
 -------------
 
-   http://invenio-oaiharvester.readthedocs.org/en/v0.1.1
+   http://pythonhosted.org/invenio-oaiharvester/
 
 Happy hacking and thanks for flying Invenio-OAIHarvester.
 

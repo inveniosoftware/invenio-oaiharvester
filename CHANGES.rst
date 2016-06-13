@@ -24,6 +24,14 @@
 Changes
 =======
 
+Version 1.0.0a1 (released 2016-06-15)
+
+Incompatible changes
+~~~~~~~~~~~~~~~~~~~~
+
+- Brings a major rewrite based on Invenio v3.0.0 release series.
+
+
 Version 0.1.1 (released 2015-08-25)
 
 - Adds missing `invenio_upgrader` dependency and amends past upgrade
