@@ -44,12 +44,12 @@
 Invenio module for OAI-PMH metadata harvesting between repositories.
 
 * Free software: GPLv2 license
-* Documentation: https://invenio-oaiharvester.readthedocs.org.
+* Documentation: https://pythonhosted.org/invenio-oaiharvester/
 
 *This is an experimental development preview release.*
 
-Features
-========
+About
+=====
 
 This module allows you to easily harvest OAI-PMH repositories, thanks to the `Sickle`_ module, and via signals
 you can hook the output into your application, or simply to files.
@@ -59,67 +59,3 @@ via command-line or regularly via `Celery beat`_.
 
 .. _Celery beat: http://celery.readthedocs.org/en/latest/userguide/periodic-tasks.html
 .. _Sickle: http://sickle.readthedocs.org/en/latest/
-
-Harvesting is simple
-====================
-
-.. code-block:: shell
-
-    inveniomanage oaiharvester get -u http://export.arxiv.org/oai2 -i oai:arXiv.org:1507.07286 > my_record.xml
-
-
-This will harvest the repository for a specific record and print the records to stdout - which in this case will save it to a file called ``my_record.xml``.
-
-If you want to have your harvested records saved in a directory automatically, its easy:
-
-.. code-block:: shell
-
-    inveniomanage oaiharvester get -u http://export.arxiv.org/oai2 -i oai:arXiv.org:1507.07286 -d /tmp
-
-
-Note the directory ``-d`` parameter that specifies a directory to save harvested XML files.
-
-
-Integration with your application
-=================================
-
-If you want to integrate ``invenio-oaiharvester`` into your application, you should hook into
-the signals sent by the harvester upon completed harvesting.
-
-See ``invenio_oaiharvester.signals:oaiharvest_finished``.
-
-Check also the defined Celery tasks under ``invenio_oaiharvester.tasks``.
-
-
-Managing OAI-PMH sources
-========================
-
-If you want to store configuration for an OAI repository, you can use the
-SQLAlchemy model ``invenio_oaiharvester.models:OAIHarvestConfig``.
-
-This is useful if you regularly need to query a server.
-
-Here you can add information about the server URL, metadataPrefix to use etc.
-This information is also available when scheduling and running tasks:
-
-.. code-block:: shell
-
-    inveniomanage oaiharvester get -n somerepo -i oai:example.org:1234
-
-Here we are using the `-n, --name` parameter to specify which configured
-OAI-PMH source to query, using the ``name`` property.
-
-
-API
-===
-
-If you need to schedule or run harvests via Python, you can use our API:
-
-.. code-block:: python
-
-    from invenio_oaiharvester.api import get_records
-
-    request, records = get_records(identifiers=["oai:arXiv.org:1207.7214"],
-                                   url="http://export.arxiv.org/oai2")
-    for record in records:
-        print rec.raw

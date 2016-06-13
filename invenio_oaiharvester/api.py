@@ -17,7 +17,20 @@
 # along with Invenio; if not, write to the Free Software Foundation, Inc.,
 # 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
 
-"""Invenio-OAIHarvester API to harvest items from OAI-PMH servers."""
+"""Invenio-OAIHarvester API to harvest items from OAI-PMH servers.
+
+If you need to schedule or run harvests from inside of Python, you can use our
+API:
+
+.. code-block:: python
+
+    from invenio_oaiharvester.api import get_records
+
+    request, records = get_records(identifiers=["oai:arXiv.org:1207.7214"],
+                                   url="http://export.arxiv.org/oai2")
+    for record in records:
+        print rec.raw
+"""
 
 from __future__ import absolute_import, print_function
 
