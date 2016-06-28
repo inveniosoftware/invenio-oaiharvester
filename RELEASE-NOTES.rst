@@ -34,8 +34,8 @@ Documentation
 Happy hacking and thanks for flying Invenio-OAIHarvester.
 
 | Invenio Development Team
-|   Email: info@invenio-software.org
+|   Email: info@inveniosoftware.org
 |   IRC: #invenio on irc.freenode.net
 |   Twitter: http://twitter.com/inveniosoftware
 |   GitHub: https://github.com/inveniosoftware/invenio-oaiharvester
-|   URL: http://invenio-software.org
+|   URL: http://inveniosoftware.org
