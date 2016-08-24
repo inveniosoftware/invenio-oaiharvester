@@ -32,8 +32,8 @@ import tempfile
 
 import pytest
 from flask import Flask
+from flask.cli import ScriptInfo
 from flask_celeryext import FlaskCeleryExt
-from flask_cli import FlaskCLI, ScriptInfo
 from invenio_db import InvenioDB, db
 
 from invenio_oaiharvester import InvenioOAIHarvester
@@ -56,7 +56,6 @@ def app(request):
             'SQLALCHEMY_DATABASE_URI', 'sqlite:///test.db'),
         TESTING=True,
     )
-    FlaskCLI(app)
     FlaskCeleryExt(app)
     InvenioDB(app)
     InvenioOAIHarvester(app)

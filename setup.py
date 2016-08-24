@@ -71,7 +71,7 @@ setup_requires = [
 ]
 
 install_requires = [
-    'Flask-CLI>=0.2.1',
+    'Flask>=0.11.1',
     'flask-celeryext>=0.1.0',
     'blinker>=1.4',
     'sickle>=0.5',

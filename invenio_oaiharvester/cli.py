@@ -22,7 +22,7 @@
 from __future__ import absolute_import, print_function
 
 import click
-from flask_cli import with_appcontext
+from flask.cli import with_appcontext
 
 from .api import get_records, list_records
 from .errors import IdentifiersOrDates

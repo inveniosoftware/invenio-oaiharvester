@@ -28,7 +28,6 @@
 from __future__ import absolute_import, print_function
 
 from flask import Flask
-from flask_cli import FlaskCLI
 
 from invenio_oaiharvester import InvenioOAIHarvester
 
@@ -42,12 +41,10 @@ def test_version():
 def test_init():
     """Test extension initialization."""
     app = Flask('testapp')
-    FlaskCLI(app)
     ext = InvenioOAIHarvester(app)
     assert 'invenio-oaiharvester' in app.extensions
 
     app = Flask('testapp')
-    FlaskCLI(app)
     ext = InvenioOAIHarvester()
     assert 'invenio-oaiharvester' not in app.extensions
     ext.init_app(app)
