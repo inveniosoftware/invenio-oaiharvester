@@ -48,3 +48,4 @@ Contact us at `info@inveniosoftware.org
 - Sebastian Witowski <sebastian.witowski@cern.ch>
 - Tibor Simko <tibor.simko@cern.ch>
 - Wojciech Ziolek <wojciech.ziolek@cern.ch>
+- Alizee Pace <alizee.pace@gmail.com>
