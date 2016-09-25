@@ -29,7 +29,7 @@ Installation
 Documentation
 -------------
 
-   http://pythonhosted.org/invenio-oaiharvester/
+   http://invenio-oaiharvester.readthedocs.io/
 
 Happy hacking and thanks for flying Invenio-OAIHarvester.
 
