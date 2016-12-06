@@ -26,6 +26,7 @@ import itertools
 import os
 import re
 import tempfile
+from contextlib import closing
 from datetime import datetime
 
 from flask import current_app
@@ -170,16 +171,16 @@ def create_file_name(output_dir):
     """
     prefix = 'oaiharvest_' + datetime.now().strftime('%Y-%m-%d') + '_'
 
-    try:
-        temp = tempfile.NamedTemporaryFile(
+    with closing(
+        tempfile.NamedTemporaryFile(
             prefix=prefix,
             suffix='.xml',
             dir=output_dir,
             mode='w+'
         )
+    ) as temp:
         file_name = temp.name[:]
-    finally:
-        temp.close()
+
     return file_name
 
 
