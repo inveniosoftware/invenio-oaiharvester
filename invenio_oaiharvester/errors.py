@@ -40,3 +40,7 @@ class WrongDateCombination(InvenioOAIHarvesterError):
 
 class IdentifiersOrDates(InvenioOAIHarvesterError):
     """Identifiers cannot be used in combination with dates."""
+
+
+class InvenioOAIHarvesterConfigNotFound(InvenioOAIHarvesterError):
+    """No InvenioOAIHarvesterConfig was found."""
