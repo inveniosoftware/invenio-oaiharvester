@@ -32,21 +32,21 @@ readme = open('README.rst').read()
 history = open('CHANGES.rst').read()
 
 tests_require = [
-    'check-manifest>=0.25',
-    'coverage>=4.0',
+    'check-manifest>=0.35',
+    'coverage>=4.3.4',
     'isort==4.2.2',
-    'mock>=1.0.0',
-    'pydocstyle>=1.0.0',
+    'mock>=2.0.0',
+    'pydocstyle>=1.1.1',
     'pytest-cache>=1.0',
-    'pytest-cov>=1.8.0',
+    'pytest-cov>=2.4.0',
     'pytest-pep8>=1.0.6',
     'pytest>=2.8.0',
-    'responses>=0.4.0',
+    'responses>=0.5.1',
 ]
 
 extras_require = {
     'docs': [
-        'Sphinx>=1.4.2',
+        'Sphinx>=1.5.3',
     ],
     'postgresql': [
         'invenio-db[postgresql]>=1.0.0a9',
@@ -71,8 +71,8 @@ setup_requires = [
 ]
 
 install_requires = [
-    'Flask>=0.11.1',
-    'flask-celeryext>=0.1.0',
+    'Flask>=0.12',
+    'flask-celeryext>=0.2.2',
     'blinker>=1.4',
     'sickle>=0.5',
 ]
