@@ -137,6 +137,12 @@ def test_write_to_dir(app, tmpdir):
         assert len(files) == 2
         assert total == 2
 
+        for file_name in files:
+            with open(file_name) as f:
+                content = f.read()
+            assert content.startswith('<ListRecords>')
+            assert content.endswith('</ListRecords>')
+
         files, total = write_to_dir([], tmpdir.dirname, max_records=1)
         assert len(files) == 0
         assert total == 0

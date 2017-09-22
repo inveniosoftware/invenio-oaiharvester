@@ -22,6 +22,7 @@
 from __future__ import absolute_import, print_function, unicode_literals
 
 import codecs
+import itertools
 import os
 import re
 import tempfile
@@ -182,6 +183,16 @@ def create_file_name(output_dir):
     return file_name
 
 
+def chunks(iterable, size):
+    """Yield successive chunks of specific size from iterable."""
+    iterable = iter(iterable)
+    while True:
+        chunk = tuple(itertools.islice(iterable, size))
+        if not chunk:
+            return
+        yield chunk
+
+
 def write_to_dir(records, output_dir, max_records=1000, encoding='utf-8'):
     """Check if the output directory exists, and creates it if it does not.
 
@@ -195,19 +206,16 @@ def write_to_dir(records, output_dir, max_records=1000, encoding='utf-8'):
         return [], 0
 
     output_path = check_or_create_dir(output_dir)
-
-    files_created = [create_file_name(output_path)]
+    files_created = []
     total = 0  # total number of records processed
-    f = codecs.open(files_created[0], 'w+', encoding=encoding)
-    f.write('<ListRecords>')
-    for record in records:
-        total += 1
-        if total > 1 and total % max_records == 0:
-            # we need a new file to write to
-            f.close()
-            files_created.append(create_file_name(output_path))
-            f = codecs.open(files_created[-1], 'w+', encoding=encoding)
-        f.write(record.raw)
-    f.write('</ListRecords>')
-    f.close()
+
+    for chunk in chunks(records, max_records):
+        files_created.append(create_file_name(output_path))
+        with codecs.open(files_created[-1], 'w+', encoding=encoding) as f:
+            f.write('<ListRecords>')
+            for record in chunk:
+                f.write(record.raw)
+                total += 1
+            f.write('</ListRecords>')
+
     return files_created, total
