@@ -42,11 +42,12 @@ tests_require = [
     'pytest-pep8>=1.0.6',
     'pytest>=2.8.0',
     'responses>=0.5.1',
+    'celery>=3.1.25,<4.0',
 ]
 
 extras_require = {
     'docs': [
-        'Sphinx>=1.5.3',
+        'Sphinx>=1.5.3,<1.6',
     ],
     'postgresql': [
         'invenio-db[postgresql]>=1.0.0a9',
