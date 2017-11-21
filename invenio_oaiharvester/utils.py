@@ -32,6 +32,8 @@ from datetime import datetime
 from flask import current_app
 from lxml import etree
 
+from .errors import InvenioOAIHarvesterConfigNotFound
+
 REGEXP_OAI_ID = re.compile(r"<identifier.*?>(.*?)</identifier>", re.DOTALL)
 
 
@@ -142,7 +144,14 @@ def get_oaiharvest_object(name):
     :return: The OAIHarvestConfig object.
     """
     from .models import OAIHarvestConfig
-    return OAIHarvestConfig.query.filter_by(name=name).first()
+    obj = OAIHarvestConfig.query.filter_by(name=name).first()
+    if not obj:
+        raise InvenioOAIHarvesterConfigNotFound(
+            'Unable to find OAIHarvesterConfig obj with name %s.'
+            % name
+        )
+
+    return obj
 
 
 def check_or_create_dir(output_dir):
