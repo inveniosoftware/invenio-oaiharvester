@@ -91,12 +91,16 @@ def list_records(metadata_prefix=None, from_date=None, until_date=None,
     # Use a dict to only return the same record once
     # (e.g. if it is part of several sets)
     records = {}
-    for spec in setspecs.split():
+    setspecs = setspecs.split() or [None]
+    for spec in setspecs:
+        params = {
+            'metadataPrefix': metadata_prefix or "oai_dc"
+        }
+        params.update(dates)
+        if spec:
+            params['set'] = spec
         try:
-            for record in request.ListRecords(
-                    metadataPrefix=metadata_prefix or "oai_dc",
-                    set=spec,
-                    **dates):
+            for record in request.ListRecords(**params):
                 records[record.header.identifier] = record
         except NoRecordsMatch:
             continue
