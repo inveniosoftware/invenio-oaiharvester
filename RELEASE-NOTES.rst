@@ -1,8 +1,8 @@
 ===============================
- Invenio-OAIHarvester v1.0.0a3
+ Invenio-OAIHarvester v1.0.0a4
 ===============================
 
-Invenio-OAIHarvester v1.0.0a3 was released on September 22, 2017.
+Invenio-OAIHarvester v1.0.0a4 was released on December 5th, 2017.
 
 About
 -----
@@ -24,7 +24,7 @@ Incompatible changes
 Installation
 ------------
 
-   $ pip install invenio-oaiharvester==1.0.0a3
+   $ pip install invenio-oaiharvester==1.0.0a4
 
 Documentation
 -------------
