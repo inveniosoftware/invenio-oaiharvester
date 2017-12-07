@@ -41,7 +41,7 @@ tests_require = [
     'pytest-cov>=2.4.0',
     'pytest-pep8>=1.0.6',
     'pytest>=2.8.0',
-    'responses>=0.5.1',
+    'responses>=0.8.0',
     'celery>=3.1.25,<4.0',
 ]
 
@@ -75,7 +75,7 @@ install_requires = [
     'Flask>=0.12',
     'flask-celeryext>=0.2.2',
     'blinker>=1.4',
-    'sickle>=0.5',
+    'sickle>=0.6.1',
 ]
 
 packages = find_packages()
