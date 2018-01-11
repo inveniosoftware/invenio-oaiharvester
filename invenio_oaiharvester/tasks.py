@@ -30,7 +30,8 @@ from .utils import get_identifier_names
 
 @shared_task
 def get_specific_records(identifiers, metadata_prefix=None, url=None,
-                         name=None, signals=True, **kwargs):
+                         name=None, signals=True, encoding=None,
+                         **kwargs):
     """Harvest specific records from an OAI repo via OAI-PMH identifiers.
 
     :param metadata_prefix: The prefix for the metadata return (e.g. 'oai_dc')
@@ -39,9 +40,12 @@ def get_specific_records(identifiers, metadata_prefix=None, url=None,
     :param name: The name of the OAIHarvestConfig to use instead of passing
                  specific parameters.
     :param signals: If signals should be emitted about results.
+    :param encoding: Override the encoding returned by the server. ISO-8859-1
+                     if it is not provided by the server.
     """
     identifiers = get_identifier_names(identifiers)
-    request, records = get_records(identifiers, metadata_prefix, url, name)
+    request, records = get_records(identifiers, metadata_prefix, url, name,
+                                   encoding)
     if signals:
         oaiharvest_finished.send(request, records=records, name=name, **kwargs)
 
@@ -50,7 +54,7 @@ def get_specific_records(identifiers, metadata_prefix=None, url=None,
 def list_records_from_dates(metadata_prefix=None, from_date=None,
                             until_date=None, url=None,
                             name=None, setspecs=None, signals=True,
-                            **kwargs):
+                            encoding=None, **kwargs):
     """Harvest multiple records from an OAI repo.
 
     :param metadata_prefix: The prefix for the metadata return (e.g. 'oai_dc')
@@ -61,6 +65,8 @@ def list_records_from_dates(metadata_prefix=None, from_date=None,
                  specific parameters.
     :param setspecs: The 'set' criteria for the harvesting (optional).
     :param signals: If signals should be emitted about results.
+    :param encoding: Override the encoding returned by the server. ISO-8859-1
+                     if it is not provided by the server.
     """
     request, records = list_records(
         metadata_prefix,
@@ -68,7 +74,8 @@ def list_records_from_dates(metadata_prefix=None, from_date=None,
         until_date,
         url,
         name,
-        setspecs
+        setspecs,
+        encoding
     )
     if signals:
         oaiharvest_finished.send(request, records=records, name=name, **kwargs)

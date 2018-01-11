@@ -109,7 +109,8 @@ def test_cli_harvest_list(script_info, sample_empty_set):
          '-m', 'arXiv',
          '-s', 'physics',
          '-f', '2015-01-17',
-         '-t', '2015-01-17'],
+         '-t', '2015-01-17',
+         '-e', 'utf-8'],
         obj=script_info
     )
     assert result.exit_code == 0

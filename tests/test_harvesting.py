@@ -45,6 +45,40 @@ def test_model_based_harvesting(app, sample_config, sample_record_xml):
 
 
 @responses.activate
+def test_model_based_utf8_harvesting(app, sample_config,
+                                     sample_record_xml_utf8):
+    """Test harvesting using model encoded in utf-8."""
+    responses.add(
+        responses.GET,
+        'http://export.arxiv.org/oai2',
+        body=sample_record_xml_utf8,
+        content_type='text/xml;charset=utf-8'
+    )
+
+    with app.app_context():
+        _, records = get_records(['oai:arXiv.org:1207.1019'],
+                                 name=sample_config)
+        record = records.pop()
+        assert record.raw.find(u'Stéphane') >= 0
+    responses.remove(
+        responses.GET,
+        'http://export.arxiv.org/oai2'
+    )
+    responses.add(
+        responses.GET,
+        'http://export.arxiv.org/oai2',
+        body=sample_record_xml_utf8,
+        content_type='text/xml'
+    )
+
+    with app.app_context():
+        _, records = get_records(['oai:arXiv.org:1207.1019'],
+                                 name=sample_config, encoding='utf-8')
+        record = records.pop()
+        assert record.raw.find(u'Stéphane') >= 0
+
+
+@responses.activate
 def test_model_based_harvesting_list(app, sample_config, sample_list_xml):
     """Test harvesting using model."""
     from invenio_oaiharvester.utils import get_oaiharvest_object

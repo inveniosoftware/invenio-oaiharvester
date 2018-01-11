@@ -61,9 +61,13 @@ def oaiharvester():
               help="Enqueue harvesting and return immediately.")
 @click.option('--signals/--no-signals', default=True,
               help="Signals sent with OAI-PMH harvesting results.")
+@click.option('-e', '--encoding', default=None,
+              help="Override the encoding returned by the server. ISO-8859-1 "
+                   "if it is not provided by the server.")
 @with_appcontext
 def harvest(metadata_prefix, name, setspecs, identifiers, from_date,
-            until_date, url, directory, arguments, quiet, enqueue, signals):
+            until_date, url, directory, arguments, quiet, enqueue, signals,
+            encoding):
     """Harvest records from an OAI repository."""
     arguments = dict(x.split('=', 1) for x in arguments)
     records = None
@@ -84,7 +88,8 @@ def harvest(metadata_prefix, name, setspecs, identifiers, from_date,
                 until_date,
                 url,
                 name,
-                setspecs
+                setspecs,
+                encoding
             )
     else:
         if (from_date is not None) or (until_date is not None):
@@ -104,7 +109,8 @@ def harvest(metadata_prefix, name, setspecs, identifiers, from_date,
                 identifiers,
                 metadata_prefix,
                 url,
-                name
+                name,
+                encoding
             )
 
     if records:

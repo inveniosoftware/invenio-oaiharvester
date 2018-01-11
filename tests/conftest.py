@@ -103,6 +103,15 @@ def sample_record_xml():
 
 
 @pytest.fixture()
+def sample_record_xml_utf8():
+    raw_xml = open(os.path.join(
+        os.path.dirname(__file__),
+        "data/sample_arxiv_response_utf8.xml"
+    )).read()
+    return raw_xml
+
+
+@pytest.fixture()
 def sample_record_xml_oai_dc():
     raw_xml = open(os.path.join(
         os.path.dirname(__file__),

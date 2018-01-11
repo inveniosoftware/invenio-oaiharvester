@@ -45,7 +45,7 @@ from .utils import get_oaiharvest_object
 
 
 def list_records(metadata_prefix=None, from_date=None, until_date=None,
-                 url=None, name=None, setspecs=None):
+                 url=None, name=None, setspecs=None, encoding=None):
     """Harvest multiple records from an OAI repo.
 
     :param metadata_prefix: The prefix for the metadata return
@@ -56,6 +56,8 @@ def list_records(metadata_prefix=None, from_date=None, until_date=None,
     :param name: The name of the OAIHarvestConfig to use instead of passing
                  specific parameters.
     :param setspecs: The 'set' criteria for the harvesting (optional).
+    :param encoding: Override the encoding returned by the server. ISO-8859-1
+                     if it is not provided by the server.
     :return: request object, list of harvested records
     """
     lastrun = None
@@ -73,7 +75,7 @@ def list_records(metadata_prefix=None, from_date=None, until_date=None,
             "Retry using the parameters -n <name> or -u <url>."
         )
 
-    request = Sickle(url)
+    request = Sickle(url, encoding=encoding)
 
     # By convention, when we have a url we have no lastrun, and when we use
     # the name we can either have from_date (if provided) or lastrun.
@@ -114,7 +116,8 @@ def list_records(metadata_prefix=None, from_date=None, until_date=None,
     return request, records.values()
 
 
-def get_records(identifiers, metadata_prefix=None, url=None, name=None):
+def get_records(identifiers, metadata_prefix=None, url=None, name=None,
+                encoding=None):
     """Harvest specific records from an OAI repo via OAI-PMH identifiers.
 
     :param metadata_prefix: The prefix for the metadata return
@@ -123,6 +126,8 @@ def get_records(identifiers, metadata_prefix=None, url=None, name=None):
     :param url: The The url to be used to create the endpoint.
     :param name: The name of the OAIHarvestConfig to use instead of passing
                  specific parameters.
+    :param encoding: Override the encoding returned by the server. ISO-8859-1
+                     if it is not provided by the server.
     :return: request object, list of harvested records
     """
     if name:
@@ -137,7 +142,7 @@ def get_records(identifiers, metadata_prefix=None, url=None, name=None):
             "Retry using the parameters -n <name> or -u <url>."
         )
 
-    request = Sickle(url)
+    request = Sickle(url, encoding=encoding)
     records = []
     for identifier in identifiers:
         arguments = {
