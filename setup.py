@@ -27,6 +27,7 @@ tests_require = [
     'pytest>=2.8.0',
     'responses>=0.8.0',
     'celery>=3.1.25,<4.0',
+    'invenio-db>=s1.0.0'
 ]
 
 extras_require = {
